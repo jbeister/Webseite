@@ -325,7 +325,7 @@
     <!-- ── Page Header ─────────────────────────────────── -->
     <div class="page-header">
         <h1 class="page-title">Anime Quiz</h1>
-        <p class="page-subtitle">Teste dein Wissen &bull; 25 Fragen</p>
+        <p class="page-subtitle">Teste dein Wissen &bull; 10 zufällige Fragen</p>
     </div>
 
     <div class="gold-divider"></div>
@@ -570,8 +570,10 @@
             return a;
         }
 
+        const FRAGEN_PRO_RUNDE = 10;
+
         function starten() {
-            fragen      = mischen(alleFragen);
+            fragen      = mischen(alleFragen).slice(0, FRAGEN_PRO_RUNDE);
             aktuelleIdx = 0;
             punkte      = 0;
             beantwortet = false;
@@ -660,16 +662,16 @@
             const total = fragen.length;
             let titel, text;
 
-            if (punkte <= 5) {
+            if (punkte <= 3) {
                 titel = "Noch Anfänger 📖";
                 text  = "Kein Problem! Jeder fängt mal an. Lies einfach weiter die Anime Aktuell und komm bald wieder!";
-            } else if (punkte <= 10) {
+            } else if (punkte <= 5) {
                 titel = "Auf dem Richtigen Weg! 🌱";
                 text  = "Du kennst schon einige Animes gut! Mit etwas mehr Erfahrung wirst du ein richtiger Profi.";
-            } else if (punkte <= 15) {
+            } else if (punkte <= 7) {
                 titel = "Echter Anime-Fan! ⭐";
                 text  = "Respekt! Du kennst dich in der Anime-Welt wirklich gut aus. Weiter so!";
-            } else if (punkte <= 20) {
+            } else if (punkte <= 9) {
                 titel = "Anime-Meister! 🌟";
                 text  = "Beeindruckend! Dein Anime-Wissen ist auf einem sehr hohen Level. Fast perfekt!";
             } else {
