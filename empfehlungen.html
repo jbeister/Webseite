@@ -103,6 +103,34 @@
             padding: 2rem 2rem 1.8rem;
         }
 
+        /* Klickbarer Header-Bereich */
+        .empf-toggle {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .empf-toggle-left { flex: 1; }
+
+        /* Pfeil */
+        .empf-arrow {
+            color: var(--gold);
+            font-size: 1.4rem;
+            line-height: 1;
+            margin-top: 0.6rem;
+            flex-shrink: 0;
+            transition: transform 0.35s ease;
+        }
+        .empf-toggle:not(.collapsed) .empf-arrow {
+            transform: rotate(180deg);
+        }
+
         /* Kategorie-Tag */
         .empf-tag {
             display: inline-block;
@@ -140,14 +168,13 @@
             letter-spacing: 2px;
             padding: 0.2rem 0.8rem;
             border-radius: 5px;
-            margin-bottom: 1.3rem;
         }
 
         /* Trennlinie */
         .empf-divider {
             height: 1px;
             background: linear-gradient(90deg, var(--gold), transparent);
-            margin-bottom: 1.3rem;
+            margin: 1.3rem 0;
             opacity: 0.3;
         }
 
@@ -231,38 +258,46 @@
                     <div class="empf-card">
                         <div class="empf-card-bar"></div>
                         <div class="empf-card-body">
-                            <div class="empf-tag">⭐ Für Hello Kitty Fans</div>
-                            <div class="empf-title">Aggretsuko</div>
-                            <div class="empf-badge">⭐ Joshua empfiehlt</div>
-                            <div class="empf-divider"></div>
-                            <div class="empf-desc">
-                                <p>
-                                    Wer Hello Kitty liebt, sollte unbedingt einen Blick auf
-                                    <strong>Aggretsuko</strong> werfen! Der Anime folgt
-                                    <strong>Retsuko</strong>, einem roten Panda, der als
-                                    Buchhalterin in einem Büro arbeitet. Ihr Alltag ist
-                                    stressig, ihre Kollegen nervig — doch Retsuko hat einen
-                                    ganz besonderen Weg, um nach der Arbeit Dampf abzulassen:
-                                    Sie singt leidenschaftlich <strong>Heavy Metal</strong>
-                                    in der Karaokebar. Was von außen erst einmal komisch klingt,
-                                    ist eigentlich eine wunderbare und witzige Geschichte über
-                                    das ganz normale Leben.
-                                </p>
-                                <p>
-                                    Die Serie beschäftigt sich aber nicht nur mit dem Büroalltag.
-                                    Auch die <strong>Welt des Internets</strong>, Freundschaft
-                                    und vor allem Retsukos <strong>Liebesgeschichte</strong>
-                                    spielen eine große Rolle. Man fiebert mit ihr mit, lacht
-                                    mit ihr und erkennt sich in ihr wieder — das macht
-                                    Aggretsuko so besonders.
-                                </p>
-                                <div class="fun-fact">
-                                    <strong>🐱 Fun Fact:</strong> Retsuko gehört tatsächlich
-                                    offiziell zur <strong>Hello Kitty-Welt</strong> von Sanrio!
-                                    Wer das nicht wusste: Im Spiel
-                                    <em>Hello Kitty Island Adventure</em> taucht Retsuko als
-                                    spielbarer Charakter auf — ein schöner Beweis dafür, dass
-                                    die beiden Welten doch enger zusammenhängen, als man denkt.
+                            <button class="empf-toggle collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#empf1" aria-expanded="false">
+                                <div class="empf-toggle-left">
+                                    <div class="empf-tag">⭐ Für Hello Kitty Fans</div>
+                                    <div class="empf-title">Aggretsuko</div>
+                                    <div class="empf-badge">⭐ Joshua empfiehlt</div>
+                                </div>
+                                <span class="empf-arrow">▼</span>
+                            </button>
+                            <div class="collapse" id="empf1">
+                                <div class="empf-divider"></div>
+                                <div class="empf-desc">
+                                    <p>
+                                        Wer Hello Kitty liebt, sollte unbedingt einen Blick auf
+                                        <strong>Aggretsuko</strong> werfen! Der Anime folgt
+                                        <strong>Retsuko</strong>, einem roten Panda, der als
+                                        Buchhalterin in einem Büro arbeitet. Ihr Alltag ist
+                                        stressig, ihre Kollegen nervig — doch Retsuko hat einen
+                                        ganz besonderen Weg, um nach der Arbeit Dampf abzulassen:
+                                        Sie singt leidenschaftlich <strong>Heavy Metal</strong>
+                                        in der Karaokebar. Was von außen erst einmal komisch klingt,
+                                        ist eigentlich eine wunderbare und witzige Geschichte über
+                                        das ganz normale Leben.
+                                    </p>
+                                    <p>
+                                        Die Serie beschäftigt sich aber nicht nur mit dem Büroalltag.
+                                        Auch die <strong>Welt des Internets</strong>, Freundschaft
+                                        und vor allem Retsukos <strong>Liebesgeschichte</strong>
+                                        spielen eine große Rolle. Man fiebert mit ihr mit, lacht
+                                        mit ihr und erkennt sich in ihr wieder — das macht
+                                        Aggretsuko so besonders.
+                                    </p>
+                                    <div class="fun-fact">
+                                        <strong>🐱 Fun Fact:</strong> Retsuko gehört tatsächlich
+                                        offiziell zur <strong>Hello Kitty-Welt</strong> von Sanrio!
+                                        Wer das nicht wusste: Im Spiel
+                                        <em>Hello Kitty Island Adventure</em> taucht Retsuko als
+                                        spielbarer Charakter auf — ein schöner Beweis dafür, dass
+                                        die beiden Welten doch enger zusammenhängen, als man denkt.
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -272,39 +307,47 @@
                     <div class="empf-card">
                         <div class="empf-card-bar"></div>
                         <div class="empf-card-body">
-                            <div class="empf-tag">📜 Für Geschichte Fans</div>
-                            <div class="empf-title">Kamikaze Kaito Jeanne</div>
-                            <div class="empf-badge">⭐ Joshua empfiehlt</div>
-                            <div class="empf-divider"></div>
-                            <div class="empf-desc">
-                                <p>
-                                    Wer Geschichte liebt und gleichzeitig eine mitreißende
-                                    Abenteuergeschichte sucht, ist bei
-                                    <strong>Kamikaze Kaito Jeanne</strong> genau richtig.
-                                    Der Anime stammt von der talentierten Mangaka
-                                    <strong>Arina Tanemura</strong> und erzählt die Geschichte
-                                    von <strong>Maron Kusakabe</strong> — einem ganz normalen
-                                    Mädchen, das jedoch ein außergewöhnliches Geheimnis trägt:
-                                    Sie ist die Reinkarnation der berühmten Heldin
-                                    <strong>Jeanne d'Arc</strong>.
-                                </p>
-                                <p>
-                                    In Marons Leben spielt auch <strong>Chiaki</strong> eine
-                                    große Rolle — ein charmanter Junge, den sie liebevoll als
-                                    "Playboy" bezeichnet. Was zunächst wie eine typische
-                                    Rivalität wirkt, entwickelt sich besonders in den späteren
-                                    Manga-Bänden und Folgen zu einer tiefen und bewegenden
-                                    <strong>Liebesgeschichte</strong>, die ans Herz geht.
-                                </p>
-                                <p>
-                                    Doch Kamikaze Kaito Jeanne geht noch viel tiefer: Die
-                                    Geschichte berührt große Themen wie den Kampf zwischen
-                                    <strong>Gut und Böse</strong>, die Verbindung zwischen
-                                    <strong>Jeanne d'Arc und Gott</strong> sowie eine
-                                    überraschende Wendung hin zu <strong>Eva</strong> — das
-                                    macht den Anime zu einem wirklich einzigartigen Erlebnis.
-                                    Ein spannender, gefühlvoller Anime für die ganze Familie!
-                                </p>
+                            <button class="empf-toggle collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#empf2" aria-expanded="false">
+                                <div class="empf-toggle-left">
+                                    <div class="empf-tag">📜 Für Geschichte Fans</div>
+                                    <div class="empf-title">Kamikaze Kaito Jeanne</div>
+                                    <div class="empf-badge">⭐ Joshua empfiehlt</div>
+                                </div>
+                                <span class="empf-arrow">▼</span>
+                            </button>
+                            <div class="collapse" id="empf2">
+                                <div class="empf-divider"></div>
+                                <div class="empf-desc">
+                                    <p>
+                                        Wer Geschichte liebt und gleichzeitig eine mitreißende
+                                        Abenteuergeschichte sucht, ist bei
+                                        <strong>Kamikaze Kaito Jeanne</strong> genau richtig.
+                                        Der Anime stammt von der talentierten Mangaka
+                                        <strong>Arina Tanemura</strong> und erzählt die Geschichte
+                                        von <strong>Maron Kusakabe</strong> — einem ganz normalen
+                                        Mädchen, das jedoch ein außergewöhnliches Geheimnis trägt:
+                                        Sie ist die Reinkarnation der berühmten Heldin
+                                        <strong>Jeanne d'Arc</strong>.
+                                    </p>
+                                    <p>
+                                        In Marons Leben spielt auch <strong>Chiaki</strong> eine
+                                        große Rolle — ein charmanter Junge, den sie liebevoll als
+                                        "Playboy" bezeichnet. Was zunächst wie eine typische
+                                        Rivalität wirkt, entwickelt sich besonders in den späteren
+                                        Manga-Bänden und Folgen zu einer tiefen und bewegenden
+                                        <strong>Liebesgeschichte</strong>, die ans Herz geht.
+                                    </p>
+                                    <p>
+                                        Doch Kamikaze Kaito Jeanne geht noch viel tiefer: Die
+                                        Geschichte berührt große Themen wie den Kampf zwischen
+                                        <strong>Gut und Böse</strong>, die Verbindung zwischen
+                                        <strong>Jeanne d'Arc und Gott</strong> sowie eine
+                                        überraschende Wendung hin zu <strong>Eva</strong> — das
+                                        macht den Anime zu einem wirklich einzigartigen Erlebnis.
+                                        Ein spannender, gefühlvoller Anime für die ganze Familie!
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -313,39 +356,47 @@
                     <div class="empf-card">
                         <div class="empf-card-bar"></div>
                         <div class="empf-card-body">
-                            <div class="empf-tag">💥 Für Action Fans</div>
-                            <div class="empf-title">Spy × Family</div>
-                            <div class="empf-badge">⭐ Joshua empfiehlt</div>
-                            <div class="empf-divider"></div>
-                            <div class="empf-desc">
-                                <p>
-                                    <strong>Spy × Family</strong> erzählt die Geschichte der
-                                    Familie Forger — doch diese Familie ist alles andere als
-                                    normal. Der Vater, <strong>Loid Forger</strong>, ist ein
-                                    Geheimagent auf einer wichtigen Mission: Um den Weltfrieden
-                                    zu sichern, muss er so schnell wie möglich eine Tochter
-                                    adoptieren und sie an eine besondere Eliteschule bringen.
-                                    Seine Wahl fällt auf <strong>Anya</strong> — ein ganz
-                                    normales Mädchen? Weit gefehlt! Anya kann nämlich
-                                    Gedanken lesen.
-                                </p>
-                                <p>
-                                    Doch damit nicht genug: Für die Aufnahme an der Schule
-                                    braucht die Familie auch noch eine Mutter. Loïds Instinkt
-                                    führt ihn dabei ausgerechnet zu einer
-                                    <strong>Auftragskillerin</strong>. Und so lebt nun eine
-                                    ganz besondere Familie zusammen — der Spion, die Killerin
-                                    und das telepathische Kind. Keiner weiß vom Geheimnis
-                                    des anderen... außer Anya, die natürlich alle Gedanken
-                                    liest. <em>Spannend, spannend!</em>
-                                </p>
-                                <p>
-                                    Jeder in dieser Familie kämpft darum, seine wahre
-                                    Identität um <strong>jeden Preis</strong> geheim zu halten.
-                                    Was dabei herauskommt, ist eine mitreißende Mischung aus
-                                    Action, Humor und überraschend viel Herz — ein Anime,
-                                    der von der ersten Folge an fesselt!
-                                </p>
+                            <button class="empf-toggle collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#empf3" aria-expanded="false">
+                                <div class="empf-toggle-left">
+                                    <div class="empf-tag">💥 Für Action Fans</div>
+                                    <div class="empf-title">Spy × Family</div>
+                                    <div class="empf-badge">⭐ Joshua empfiehlt</div>
+                                </div>
+                                <span class="empf-arrow">▼</span>
+                            </button>
+                            <div class="collapse" id="empf3">
+                                <div class="empf-divider"></div>
+                                <div class="empf-desc">
+                                    <p>
+                                        <strong>Spy × Family</strong> erzählt die Geschichte der
+                                        Familie Forger — doch diese Familie ist alles andere als
+                                        normal. Der Vater, <strong>Loid Forger</strong>, ist ein
+                                        Geheimagent auf einer wichtigen Mission: Um den Weltfrieden
+                                        zu sichern, muss er so schnell wie möglich eine Tochter
+                                        adoptieren und sie an eine besondere Eliteschule bringen.
+                                        Seine Wahl fällt auf <strong>Anya</strong> — ein ganz
+                                        normales Mädchen? Weit gefehlt! Anya kann nämlich
+                                        Gedanken lesen.
+                                    </p>
+                                    <p>
+                                        Doch damit nicht genug: Für die Aufnahme an der Schule
+                                        braucht die Familie auch noch eine Mutter. Loïds Instinkt
+                                        führt ihn dabei ausgerechnet zu einer
+                                        <strong>Auftragskillerin</strong>. Und so lebt nun eine
+                                        ganz besondere Familie zusammen — der Spion, die Killerin
+                                        und das telepathische Kind. Keiner weiß vom Geheimnis
+                                        des anderen... außer Anya, die natürlich alle Gedanken
+                                        liest. <em>Spannend, spannend!</em>
+                                    </p>
+                                    <p>
+                                        Jeder in dieser Familie kämpft darum, seine wahre
+                                        Identität um <strong>jeden Preis</strong> geheim zu halten.
+                                        Was dabei herauskommt, ist eine mitreißende Mischung aus
+                                        Action, Humor und überraschend viel Herz — ein Anime,
+                                        der von der ersten Folge an fesselt!
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -354,38 +405,46 @@
                     <div class="empf-card">
                         <div class="empf-card-bar"></div>
                         <div class="empf-card-body">
-                            <div class="empf-tag">🧪 Für Medizin Fans</div>
-                            <div class="empf-title">Tagebücher der Apothekerin</div>
-                            <div class="empf-badge">⭐ Joshua empfiehlt</div>
-                            <div class="empf-divider"></div>
-                            <div class="empf-desc">
-                                <p>
-                                    <strong>Tagebücher der Apothekerin</strong> erzählt die
-                                    Geschichte von <strong>Maomao</strong> — einem Mädchen,
-                                    das eine leidenschaftliche Apothekerin ist und eine
-                                    besondere Faszination für <strong>Arzneien und Gifte</strong>
-                                    aller Art hegt. Für sie gibt es kaum etwas Spannenderes
-                                    als die Geheimnisse, die in Kräutern und Substanzen
-                                    stecken.
-                                </p>
-                                <p>
-                                    Doch eines Tages verändert sich ihr Leben schlagartig:
-                                    <strong>Menschenhändler</strong> verschleppen sie an den
-                                    kaiserlichen Hof. Was zunächst wie ein schlimmes Schicksal
-                                    wirkt, wird für Maomao zur Bühne ihrer wahren Stärken.
-                                    Am Hof begegnet sie einer Reihe von
-                                    <strong>rätselhaften Fällen</strong> rund um Gifte und
-                                    Krankheiten — und löst sie mit ihrem außergewöhnlichen
-                                    Wissen, während alle anderen noch rätseln.
-                                </p>
-                                <p>
-                                    Doch nicht nur spannende Geheimnisse warten auf sie:
-                                    Am Hof macht Maomao auch unerwartete
-                                    <strong>Liebeserfahrungen</strong>, die ihr Leben auf
-                                    ganz neue Weise bereichern. Ein Anime, der Spannung,
-                                    Witz und Gefühl wunderbar miteinander verbindet —
-                                    perfekt für alle, die Medizin und Mysterien lieben!
-                                </p>
+                            <button class="empf-toggle collapsed" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#empf4" aria-expanded="false">
+                                <div class="empf-toggle-left">
+                                    <div class="empf-tag">🧪 Für Medizin Fans</div>
+                                    <div class="empf-title">Tagebücher der Apothekerin</div>
+                                    <div class="empf-badge">⭐ Joshua empfiehlt</div>
+                                </div>
+                                <span class="empf-arrow">▼</span>
+                            </button>
+                            <div class="collapse" id="empf4">
+                                <div class="empf-divider"></div>
+                                <div class="empf-desc">
+                                    <p>
+                                        <strong>Tagebücher der Apothekerin</strong> erzählt die
+                                        Geschichte von <strong>Maomao</strong> — einem Mädchen,
+                                        das eine leidenschaftliche Apothekerin ist und eine
+                                        besondere Faszination für <strong>Arzneien und Gifte</strong>
+                                        aller Art hegt. Für sie gibt es kaum etwas Spannenderes
+                                        als die Geheimnisse, die in Kräutern und Substanzen
+                                        stecken.
+                                    </p>
+                                    <p>
+                                        Doch eines Tages verändert sich ihr Leben schlagartig:
+                                        <strong>Menschenhändler</strong> verschleppen sie an den
+                                        kaiserlichen Hof. Was zunächst wie ein schlimmes Schicksal
+                                        wirkt, wird für Maomao zur Bühne ihrer wahren Stärken.
+                                        Am Hof begegnet sie einer Reihe von
+                                        <strong>rätselhaften Fällen</strong> rund um Gifte und
+                                        Krankheiten — und löst sie mit ihrem außergewöhnlichen
+                                        Wissen, während alle anderen noch rätseln.
+                                    </p>
+                                    <p>
+                                        Doch nicht nur spannende Geheimnisse warten auf sie:
+                                        Am Hof macht Maomao auch unerwartete
+                                        <strong>Liebeserfahrungen</strong>, die ihr Leben auf
+                                        ganz neue Weise bereichern. Ein Anime, der Spannung,
+                                        Witz und Gefühl wunderbar miteinander verbindet —
+                                        perfekt für alle, die Medizin und Mysterien lieben!
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
