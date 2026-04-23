@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empfehlungen – Anime Aktuell</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        :root {
+            --gold:    #FFD700;
+            --silver:  #C0C0C0;
+            --red:     #CC0000;
+            --dark-bg: #08080f;
+            --card-bg: #10101e;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--silver);
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+        }
+
+        /* ── Navbar ─────────────────────────────────── */
+        .navbar {
+            background: linear-gradient(135deg, #0a0a14, #14142a);
+            border-bottom: 2px solid var(--gold);
+        }
+        .navbar-brand {
+            color: var(--red) !important;
+            font-family: 'Bangers', cursive;
+            font-size: 1.9rem;
+            letter-spacing: 3px;
+        }
+        .nav-link {
+            color: var(--gold) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: #fff !important; }
+        .navbar-toggler { border: 1px solid var(--gold); }
+        .navbar-toggler-icon { filter: invert(80%) sepia(100%) saturate(500%) hue-rotate(0deg); }
+
+        /* ── Page Header ────────────────────────────── */
+        .page-header {
+            background: linear-gradient(135deg, #0a0a14, #1a0a2e);
+            border-bottom: 3px solid var(--gold);
+            padding: 2.5rem 0;
+            text-align: center;
+        }
+        .page-title {
+            font-family: 'Bangers', cursive;
+            font-size: 4rem;
+            color: var(--red);
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0 #440000;
+            margin: 0;
+        }
+        .page-subtitle {
+            color: var(--silver);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 5px;
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+
+        /* ── Gold divider ───────────────────────────── */
+        .gold-divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--silver), var(--gold), transparent);
+        }
+
+        /* ── Empfehlungen ───────────────────────────── */
+        .empf-section {
+            padding: 4rem 0 5rem;
+        }
+
+        .empf-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,215,0,0.22);
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+            transition: border-color 0.25s, box-shadow 0.25s;
+        }
+        .empf-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 12px 40px rgba(255,215,0,0.12);
+        }
+
+        /* Farbstreifen oben */
+        .empf-card-bar {
+            height: 5px;
+            background: linear-gradient(90deg, var(--gold), var(--silver), var(--gold));
+        }
+
+        .empf-card-body {
+            padding: 2rem 2rem 1.8rem;
+        }
+
+        /* Kategorie-Tag */
+        .empf-tag {
+            display: inline-block;
+            background: rgba(255,215,0,0.12);
+            border: 1px solid rgba(255,215,0,0.4);
+            color: var(--gold);
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            padding: 0.2rem 0.9rem;
+            border-radius: 20px;
+            margin-bottom: 0.9rem;
+        }
+
+        /* Titel */
+        .empf-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: #fff;
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        /* "Joshua empfiehlt" Badge */
+        .empf-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--red);
+            color: #fff;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            padding: 0.2rem 0.8rem;
+            border-radius: 5px;
+            margin-bottom: 1.3rem;
+        }
+
+        /* Trennlinie */
+        .empf-divider {
+            height: 1px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            margin-bottom: 1.3rem;
+            opacity: 0.3;
+        }
+
+        /* Beschreibung */
+        .empf-desc {
+            color: var(--silver);
+            font-size: 1.05rem;
+            line-height: 1.75;
+        }
+        .empf-desc p { margin-bottom: 0.9rem; }
+        .empf-desc p:last-child { margin-bottom: 0; }
+        .empf-desc strong { color: #fff; }
+
+        /* Fun-Fact Box */
+        .fun-fact {
+            background: rgba(255,215,0,0.06);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 0.9rem 1.2rem;
+            margin-top: 1.2rem;
+            font-size: 0.92rem;
+            color: rgba(192,192,192,0.85);
+            line-height: 1.55;
+        }
+        .fun-fact strong { color: var(--gold); }
+
+        /* ── Footer ─────────────────────────────────── */
+        footer {
+            background: #050508;
+            border-top: 2px solid var(--gold);
+            padding: 2rem 0;
+            text-align: center;
+            color: rgba(192,192,192,0.55);
+            font-size: 0.85rem;
+        }
+        .footer-brand {
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            color: var(--red);
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────── -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Anime Aktuell</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    aria-controls="navMenu" aria-expanded="false" aria-label="Menü">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Startseite</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ausgaben.html">Ausgaben</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="empfehlungen.html">Empfehlungen</a></li>
+                    <li class="nav-item"><a class="nav-link" href="extras.html">Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Page Header ─────────────────────────────────── -->
+    <div class="page-header">
+        <h1 class="page-title">Empfehlungen</h1>
+        <p class="page-subtitle">Von Joshua &bull; Anime Aktuell</p>
+    </div>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Empfehlungen ─────────────────────────────────── -->
+    <section class="empf-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-lg-9">
+
+                    <!-- Empfehlung 1: Aggretsuko -->
+                    <div class="empf-card">
+                        <div class="empf-card-bar"></div>
+                        <div class="empf-card-body">
+                            <div class="empf-tag">⭐ Für Hello Kitty Fans</div>
+                            <div class="empf-title">Aggretsuko</div>
+                            <div class="empf-badge">⭐ Joshua empfiehlt</div>
+                            <div class="empf-divider"></div>
+                            <div class="empf-desc">
+                                <p>
+                                    Wer Hello Kitty liebt, sollte unbedingt einen Blick auf
+                                    <strong>Aggretsuko</strong> werfen! Der Anime folgt
+                                    <strong>Retsuko</strong>, einem roten Panda, der als
+                                    Buchhalterin in einem Büro arbeitet. Ihr Alltag ist
+                                    stressig, ihre Kollegen nervig — doch Retsuko hat einen
+                                    ganz besonderen Weg, um nach der Arbeit Dampf abzulassen:
+                                    Sie singt leidenschaftlich <strong>Heavy Metal</strong>
+                                    in der Karaokebar. Was von außen erst einmal komisch klingt,
+                                    ist eigentlich eine wunderbare und witzige Geschichte über
+                                    das ganz normale Leben.
+                                </p>
+                                <p>
+                                    Die Serie beschäftigt sich aber nicht nur mit dem Büroalltag.
+                                    Auch die <strong>Welt des Internets</strong>, Freundschaft
+                                    und vor allem Retsukos <strong>Liebesgeschichte</strong>
+                                    spielen eine große Rolle. Man fiebert mit ihr mit, lacht
+                                    mit ihr und erkennt sich in ihr wieder — das macht
+                                    Aggretsuko so besonders.
+                                </p>
+                                <div class="fun-fact">
+                                    <strong>🐱 Fun Fact:</strong> Retsuko gehört tatsächlich
+                                    offiziell zur <strong>Hello Kitty-Welt</strong> von Sanrio!
+                                    Wer das nicht wusste: Im Spiel
+                                    <em>Hello Kitty Island Adventure</em> taucht Retsuko als
+                                    spielbarer Charakter auf — ein schöner Beweis dafür, dass
+                                    die beiden Welten doch enger zusammenhängen, als man denkt.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Empfehlung 2: Kamikaze Kaito Jeanne -->
+                    <div class="empf-card">
+                        <div class="empf-card-bar"></div>
+                        <div class="empf-card-body">
+                            <div class="empf-tag">📜 Für Geschichte Fans</div>
+                            <div class="empf-title">Kamikaze Kaito Jeanne</div>
+                            <div class="empf-badge">⭐ Joshua empfiehlt</div>
+                            <div class="empf-divider"></div>
+                            <div class="empf-desc">
+                                <p>
+                                    Wer Geschichte liebt und gleichzeitig eine mitreißende
+                                    Abenteuergeschichte sucht, ist bei
+                                    <strong>Kamikaze Kaito Jeanne</strong> genau richtig.
+                                    Der Anime stammt von der talentierten Mangaka
+                                    <strong>Arina Tanemura</strong> und erzählt die Geschichte
+                                    von <strong>Maron Kusakabe</strong> — einem ganz normalen
+                                    Mädchen, das jedoch ein außergewöhnliches Geheimnis trägt:
+                                    Sie ist die Reinkarnation der berühmten Heldin
+                                    <strong>Jeanne d'Arc</strong>.
+                                </p>
+                                <p>
+                                    In Marons Leben spielt auch <strong>Chiaki</strong> eine
+                                    große Rolle — ein charmanter Junge, den sie liebevoll als
+                                    "Playboy" bezeichnet. Was zunächst wie eine typische
+                                    Rivalität wirkt, entwickelt sich besonders in den späteren
+                                    Manga-Bänden und Folgen zu einer tiefen und bewegenden
+                                    <strong>Liebesgeschichte</strong>, die ans Herz geht.
+                                </p>
+                                <p>
+                                    Doch Kamikaze Kaito Jeanne geht noch viel tiefer: Die
+                                    Geschichte berührt große Themen wie den Kampf zwischen
+                                    <strong>Gut und Böse</strong>, die Verbindung zwischen
+                                    <strong>Jeanne d'Arc und Gott</strong> sowie eine
+                                    überraschende Wendung hin zu <strong>Eva</strong> — das
+                                    macht den Anime zu einem wirklich einzigartigen Erlebnis.
+                                    Ein spannender, gefühlvoller Anime für die ganze Familie!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platz für weitere Empfehlungen -->
+                    <!-- Einfach einen neuen Block wie oben hier einfügen! -->
+
+                    <!-- In Bearbeitung -->
+                    <div class="text-center mt-2" style="
+                        border: 1px dashed rgba(255,215,0,0.3);
+                        border-radius: 12px;
+                        padding: 1.5rem 2rem;
+                        color: rgba(192,192,192,0.5);
+                        font-family: 'Bebas Neue', cursive;
+                        letter-spacing: 3px;
+                        font-size: 1.1rem;
+                    ">
+                        ⚙️ Weitere Empfehlungen befinden sich in Bearbeitung
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Footer ───────────────────────────────────────── -->
+    <footer>
+        <div class="footer-brand">Anime Aktuell</div>
+        <div style="margin:0.3rem 0;">
+            <a href="impressum.html" style="color:rgba(192,192,192,0.5);font-size:0.8rem;text-decoration:none;">Impressum</a>
+        </div>
+        <small>Ein Schulprojekt &bull; Alle Rechte vorbehalten</small>
+    </footer>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

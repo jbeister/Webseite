@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ausgabe 2 – Anime Aktuell</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        :root {
+            --gold:    #FFD700;
+            --silver:  #C0C0C0;
+            --red:     #CC0000;
+            --dark-bg: #08080f;
+            --card-bg: #10101e;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--silver);
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+        }
+
+        /* ── Navbar ─────────────────────────────────── */
+        .navbar {
+            background: linear-gradient(135deg, #0a0a14, #14142a);
+            border-bottom: 2px solid var(--gold);
+        }
+        .navbar-brand {
+            color: var(--red) !important;
+            font-family: 'Bangers', cursive;
+            font-size: 1.9rem;
+            letter-spacing: 3px;
+        }
+        .nav-link {
+            color: var(--gold) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: #fff !important; }
+        .navbar-toggler { border: 1px solid var(--gold); }
+        .navbar-toggler-icon { filter: invert(80%) sepia(100%) saturate(500%) hue-rotate(0deg); }
+
+        /* ── Page Header ────────────────────────────── */
+        .page-header {
+            background: linear-gradient(135deg, #0a0a14, #1a0a2e);
+            border-bottom: 3px solid var(--gold);
+            padding: 2.5rem 0;
+            text-align: center;
+        }
+        .page-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5rem;
+            color: var(--red);
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0 #440000;
+            margin: 0;
+        }
+        .page-subtitle {
+            color: var(--silver);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 5px;
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+        .btn-back {
+            color: var(--gold);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 2px;
+            font-size: 1rem;
+            text-decoration: none;
+            border: 1px solid rgba(255,215,0,0.4);
+            padding: 0.3rem 1rem;
+            border-radius: 5px;
+            display: inline-block;
+            margin-bottom: 0.8rem;
+            transition: background 0.2s;
+        }
+        .btn-back:hover {
+            background: rgba(255,215,0,0.1);
+            color: var(--gold);
+        }
+
+        /* ── Gold divider ───────────────────────────── */
+        .gold-divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--silver), var(--gold), transparent);
+        }
+
+        /* ── Seiten-Grid ────────────────────────────── */
+        .pages-section {
+            padding: 3rem 0;
+        }
+        .section-title {
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 2rem;
+        }
+
+        .page-thumb {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+            aspect-ratio: 3 / 4;
+            position: relative;
+        }
+        .page-thumb:hover {
+            border-color: var(--gold);
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(255,215,0,0.2);
+        }
+        .page-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Platzhalter für Seiten */
+        .page-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,215,0,0.4);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 2px;
+            text-align: center;
+            border: 2px dashed rgba(255,215,0,0.2);
+            gap: 0.3rem;
+        }
+        .page-placeholder .ph-num {
+            font-size: 2rem;
+            color: rgba(255,215,0,0.2);
+        }
+        .page-placeholder .ph-label {
+            font-size: 0.9rem;
+        }
+        .page-placeholder .ph-hint {
+            font-size: 0.6rem;
+            opacity: 0.5;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        /* Zoom-Lupe-Symbol beim Hover */
+        .page-thumb .zoom-icon {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.6);
+            color: var(--gold);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.2s;
+            z-index: 2;
+        }
+        .page-thumb:hover .zoom-icon { opacity: 1; }
+
+        /* ── Modal (Vollbild-Ansicht) ────────────────── */
+        .modal-content {
+            background: #0a0a14;
+            border: 2px solid var(--gold);
+        }
+        .modal-header {
+            border-bottom: 1px solid rgba(255,215,0,0.3);
+        }
+        .modal-title {
+            font-family: 'Bangers', cursive;
+            color: var(--gold);
+            letter-spacing: 3px;
+            font-size: 1.5rem;
+        }
+        .btn-close { filter: invert(1); }
+        #modalImg {
+            width: 100%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        /* Platzhalter im Modal */
+        #modalPlaceholder {
+            width: 100%;
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,215,0,0.4);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 3px;
+            font-size: 1.5rem;
+            border: 2px dashed rgba(255,215,0,0.2);
+            border-radius: 8px;
+            gap: 0.5rem;
+        }
+
+        /* Modal Navigation */
+        .modal-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        .btn-modal-nav {
+            background: rgba(255,215,0,0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 2px;
+            font-size: 1rem;
+            padding: 0.3rem 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-modal-nav:hover { background: rgba(255,215,0,0.2); }
+        .btn-modal-nav:disabled { opacity: 0.3; cursor: default; }
+        #modalPageInfo {
+            color: var(--silver);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 2px;
+        }
+
+        /* ── Footer ─────────────────────────────────── */
+        footer {
+            background: #050508;
+            border-top: 2px solid var(--gold);
+            padding: 2rem 0;
+            text-align: center;
+            color: rgba(192,192,192,0.55);
+            font-size: 0.85rem;
+        }
+        .footer-brand {
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            color: var(--red);
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────── -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Anime Aktuell</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    aria-controls="navMenu" aria-expanded="false" aria-label="Menü">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Startseite</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="ausgaben.html">Ausgaben</a></li>
+                    <li class="nav-item"><a class="nav-link" href="extras.html">Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Page Header ─────────────────────────────────── -->
+    <div class="page-header">
+        <div class="container">
+            <a href="ausgaben.html" class="btn-back">← Alle Ausgaben</a>
+            <h1 class="page-title">Ausgabe 2</h1>
+            <p class="page-subtitle">Anime Aktuell &bull; Alle Seiten</p>
+        </div>
+    </div>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Seiten Grid ──────────────────────────────────── -->
+    <section class="pages-section">
+        <div class="container">
+            <h2 class="section-title text-center">Seiten der Ausgabe</h2>
+            <div class="row g-3" id="pagesGrid">
+
+                <!--
+                    WIE BILDER HINZUFÜGEN:
+                    1. Speichere die Bilder im Ordner: images/ausgabe2/
+                    2. Benenne sie: cover.jpg, seite2.jpg, seite3.jpg, ...
+                    3. Ersetze den Platzhalter-Block durch:
+                       <img src="images/ausgabe2/cover.jpg" alt="Titelbild">
+                    4. Entferne dann den Platzhalter-Div
+                -->
+
+                <!-- Seite: Titelbild (Cover) -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="page-thumb" data-seite="Titelbild" data-src="images/ausgabe2/cover.jpg">
+                        <div class="zoom-icon">🔍</div>
+                        <!-- <img src="images/ausgabe2/cover.jpg" alt="Titelbild"> -->
+                        <div class="page-placeholder">
+                            <div class="ph-num">📰</div>
+                            <div class="ph-label">Titelbild</div>
+                            <div class="ph-hint">cover.jpg</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seite 2 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="page-thumb" data-seite="Seite 2" data-src="images/ausgabe2/seite2.jpg">
+                        <div class="zoom-icon">🔍</div>
+                        <!-- <img src="images/ausgabe2/seite2.jpg" alt="Seite 2"> -->
+                        <div class="page-placeholder">
+                            <div class="ph-num">2</div>
+                            <div class="ph-label">Seite 2</div>
+                            <div class="ph-hint">seite2.jpg</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seite 3 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="page-thumb" data-seite="Seite 3" data-src="images/ausgabe2/seite3.jpg">
+                        <div class="zoom-icon">🔍</div>
+                        <!-- <img src="images/ausgabe2/seite3.jpg" alt="Seite 3"> -->
+                        <div class="page-placeholder">
+                            <div class="ph-num">3</div>
+                            <div class="ph-label">Seite 3</div>
+                            <div class="ph-hint">seite3.jpg</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seite 4 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="page-thumb" data-seite="Seite 4" data-src="images/ausgabe2/seite4.jpg">
+                        <div class="zoom-icon">🔍</div>
+                        <!-- <img src="images/ausgabe2/seite4.jpg" alt="Seite 4"> -->
+                        <div class="page-placeholder">
+                            <div class="ph-num">4</div>
+                            <div class="ph-label">Seite 4</div>
+                            <div class="ph-hint">seite4.jpg</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seite 5 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="page-thumb" data-seite="Seite 5" data-src="images/ausgabe2/seite5.jpg">
+                        <div class="zoom-icon">🔍</div>
+                        <!-- <img src="images/ausgabe2/seite5.jpg" alt="Seite 5"> -->
+                        <div class="page-placeholder">
+                            <div class="ph-num">5</div>
+                            <div class="ph-label">Seite 5</div>
+                            <div class="ph-hint">seite5.jpg</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seite 6 -->
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="page-thumb" data-seite="Seite 6" data-src="images/ausgabe2/seite6.jpg">
+                        <div class="zoom-icon">🔍</div>
+                        <!-- <img src="images/ausgabe2/seite6.jpg" alt="Seite 6"> -->
+                        <div class="page-placeholder">
+                            <div class="ph-num">6</div>
+                            <div class="ph-label">Seite 6</div>
+                            <div class="ph-hint">seite6.jpg</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Erscheint bald -->
+            <div class="text-center mt-5" style="
+                border: 1px dashed rgba(255,215,0,0.3);
+                border-radius: 12px;
+                padding: 2rem;
+                color: rgba(192,192,192,0.5);
+                font-family: 'Bebas Neue', cursive;
+                letter-spacing: 3px;
+                font-size: 1.1rem;
+            ">
+                🕐 Ausgabe 2 erscheint in Kürze
+            </div>
+
+        </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Footer ───────────────────────────────────────── -->
+    <footer>
+        <div class="footer-brand">Anime Aktuell</div>
+        <div style="margin:0.3rem 0;">
+            <a href="impressum.html" style="color:rgba(192,192,192,0.5);font-size:0.8rem;text-decoration:none;">Impressum</a>
+        </div>
+        <small>Ein Schulprojekt &bull; Alle Rechte vorbehalten</small>
+    </footer>
+
+    <!-- ── Modal: Vollbild-Ansicht ──────────────────────── -->
+    <div class="modal fade" id="pageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content p-3">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Titelbild</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Schließen"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImg" src="" alt="" style="display:none;">
+                    <div id="modalPlaceholder">
+                        <div>🖼️</div>
+                        <div>Bild kommt bald</div>
+                    </div>
+                    <div class="modal-nav mt-3">
+                        <button class="btn-modal-nav" id="btnPrev">← Zurück</button>
+                        <span id="modalPageInfo">1 / 6</span>
+                        <button class="btn-modal-nav" id="btnNext">Weiter →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Alle Seiten-Karten einsammeln
+        const thumbs = Array.from(document.querySelectorAll('.page-thumb'));
+        let currentIndex = 0;
+        const modal      = new bootstrap.Modal(document.getElementById('pageModal'));
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImg   = document.getElementById('modalImg');
+        const modalPH    = document.getElementById('modalPlaceholder');
+        const pageInfo   = document.getElementById('modalPageInfo');
+        const btnPrev    = document.getElementById('btnPrev');
+        const btnNext    = document.getElementById('btnNext');
+
+        function showPage(index) {
+            currentIndex = index;
+            const thumb  = thumbs[index];
+            const src    = thumb.dataset.src;
+            const label  = thumb.dataset.seite;
+
+            modalTitle.textContent = label;
+            pageInfo.textContent   = (index + 1) + ' / ' + thumbs.length;
+            btnPrev.disabled = index === 0;
+            btnNext.disabled = index === thumbs.length - 1;
+
+            // Echtes Bild versuchen zu laden
+            const img = new Image();
+            img.onload = () => {
+                modalImg.src = src;
+                modalImg.alt = label;
+                modalImg.style.display = 'block';
+                modalPH.style.display  = 'none';
+            };
+            img.onerror = () => {
+                modalImg.style.display = 'none';
+                modalPH.style.display  = 'flex';
+            };
+            img.src = src;
+        }
+
+        // Klick auf Karte öffnet Modal
+        thumbs.forEach((thumb, i) => {
+            thumb.addEventListener('click', () => {
+                showPage(i);
+                modal.show();
+            });
+        });
+
+        btnPrev.addEventListener('click', () => { if (currentIndex > 0) showPage(currentIndex - 1); });
+        btnNext.addEventListener('click', () => { if (currentIndex < thumbs.length - 1) showPage(currentIndex + 1); });
+
+        // Pfeiltasten zum Blättern
+        document.addEventListener('keydown', e => {
+            if (!document.getElementById('pageModal').classList.contains('show')) return;
+            if (e.key === 'ArrowLeft')  btnPrev.click();
+            if (e.key === 'ArrowRight') btnNext.click();
+        });
+    </script>
+</body>
+</html>

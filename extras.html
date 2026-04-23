@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz – Anime Aktuell</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        :root {
+            --gold:    #FFD700;
+            --silver:  #C0C0C0;
+            --red:     #CC0000;
+            --dark-bg: #08080f;
+            --card-bg: #10101e;
+            --green:   #22cc66;
+            --wrong:   #cc2222;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--silver);
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        /* ── Navbar ─────────────────────────────────── */
+        .navbar {
+            background: linear-gradient(135deg, #0a0a14, #14142a);
+            border-bottom: 2px solid var(--gold);
+        }
+        .navbar-brand {
+            color: var(--red) !important;
+            font-family: 'Bangers', cursive;
+            font-size: 1.9rem;
+            letter-spacing: 3px;
+        }
+        .nav-link {
+            color: var(--gold) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: #fff !important; }
+        .navbar-toggler { border: 1px solid var(--gold); }
+        .navbar-toggler-icon { filter: invert(80%) sepia(100%) saturate(500%) hue-rotate(0deg); }
+
+        /* ── Page Header ────────────────────────────── */
+        .page-header {
+            background: linear-gradient(135deg, #0a0a14, #1a0a2e);
+            border-bottom: 3px solid var(--gold);
+            padding: 2.5rem 0;
+            text-align: center;
+        }
+        .page-title {
+            font-family: 'Bangers', cursive;
+            font-size: 4rem;
+            color: var(--red);
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0 #440000;
+            margin: 0;
+        }
+        .page-subtitle {
+            color: var(--silver);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 5px;
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+
+        /* ── Gold divider ───────────────────────────── */
+        .gold-divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--silver), var(--gold), transparent);
+        }
+
+        /* ── Quiz Bereich ───────────────────────────── */
+        .quiz-section {
+            padding: 3rem 0 5rem;
+        }
+
+        /* Fortschrittsbalken */
+        .progress-bar-wrap {
+            background: rgba(255,255,255,0.08);
+            border-radius: 20px;
+            height: 10px;
+            margin-bottom: 0.6rem;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--silver));
+            border-radius: 20px;
+            transition: width 0.4s ease;
+        }
+        .progress-label {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            color: rgba(192,192,192,0.6);
+            text-align: right;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Quiz Karte */
+        .quiz-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,215,0,0.25);
+            border-radius: 16px;
+            padding: 2rem 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .quiz-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--silver), var(--gold));
+        }
+
+        .anime-label {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            opacity: 0.7;
+            margin-bottom: 0.6rem;
+        }
+
+        .question-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.4;
+            margin-bottom: 1.8rem;
+        }
+
+        /* Antwort-Buttons */
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+        }
+        @media (max-width: 480px) {
+            .answers-grid { grid-template-columns: 1fr; }
+        }
+
+        .answer-btn {
+            background: rgba(255,255,255,0.05);
+            border: 1.5px solid rgba(255,215,0,0.25);
+            border-radius: 10px;
+            color: var(--silver);
+            font-family: 'Oswald', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            padding: 0.8rem 1rem;
+            text-align: left;
+            cursor: pointer;
+            transition: background 0.18s, border-color 0.18s, transform 0.18s;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            line-height: 1.3;
+        }
+        .answer-btn:hover:not(:disabled) {
+            background: rgba(255,215,0,0.1);
+            border-color: var(--gold);
+            transform: translateX(4px);
+        }
+        .answer-btn .btn-letter {
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            color: var(--gold);
+            min-width: 22px;
+        }
+
+        /* Zustände nach Auswahl */
+        .answer-btn.richtig {
+            background: rgba(34,204,102,0.18);
+            border-color: var(--green);
+            color: #fff;
+        }
+        .answer-btn.richtig .btn-letter { color: var(--green); }
+        .answer-btn.falsch {
+            background: rgba(204,34,34,0.18);
+            border-color: var(--wrong);
+            color: rgba(255,255,255,0.6);
+        }
+        .answer-btn.falsch .btn-letter { color: var(--wrong); }
+        .answer-btn:disabled { cursor: default; transform: none; }
+
+        /* Feedback-Text */
+        .feedback {
+            margin-top: 1.2rem;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            min-height: 2rem;
+            text-align: center;
+        }
+        .feedback.richtig { color: var(--green); }
+        .feedback.falsch  { color: var(--wrong); }
+
+        /* Weiter-Button */
+        .btn-weiter {
+            display: none;
+            margin: 1.2rem auto 0;
+            background: linear-gradient(135deg, var(--gold), #b08800);
+            color: #0a0a0f;
+            font-family: 'Bangers', cursive;
+            font-size: 1.4rem;
+            letter-spacing: 3px;
+            border: none;
+            padding: 0.5rem 2.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-weiter:hover { opacity: 0.85; transform: scale(1.04); }
+
+        /* ── Ergebnis-Screen ────────────────────────── */
+        #ergebnis {
+            display: none;
+            text-align: center;
+        }
+        .ergebnis-kreis {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            border: 5px solid var(--gold);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            background: rgba(255,215,0,0.05);
+            box-shadow: 0 0 30px rgba(255,215,0,0.3);
+        }
+        .ergebnis-punkte {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .ergebnis-von {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.9rem;
+            color: var(--silver);
+            letter-spacing: 2px;
+        }
+        .ergebnis-titel {
+            font-family: 'Bangers', cursive;
+            font-size: 2.5rem;
+            color: var(--red);
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0 #440000;
+            margin-bottom: 0.5rem;
+        }
+        .ergebnis-text {
+            color: var(--silver);
+            font-size: 1.1rem;
+            max-width: 420px;
+            margin: 0 auto 2rem;
+            line-height: 1.5;
+        }
+        .btn-neustart {
+            background: linear-gradient(135deg, var(--red), #880000);
+            color: #fff;
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            border: none;
+            padding: 0.5rem 2.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-neustart:hover { opacity: 0.85; transform: scale(1.04); }
+
+        /* ── Footer ─────────────────────────────────── */
+        footer {
+            background: #050508;
+            border-top: 2px solid var(--gold);
+            padding: 2rem 0;
+            text-align: center;
+            color: rgba(192,192,192,0.55);
+            font-size: 0.85rem;
+        }
+        .footer-brand {
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            color: var(--red);
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────── -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Anime Aktuell</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    aria-controls="navMenu" aria-expanded="false" aria-label="Menü">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Startseite</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ausgaben.html">Ausgaben</a></li>
+                    <li class="nav-item"><a class="nav-link" href="empfehlungen.html">Empfehlungen</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="extras.html">Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Page Header ─────────────────────────────────── -->
+    <div class="page-header">
+        <h1 class="page-title">Anime Quiz</h1>
+        <p class="page-subtitle">Teste dein Wissen &bull; 25 Fragen</p>
+    </div>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Quiz ────────────────────────────────────────── -->
+    <section class="quiz-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-7">
+
+                    <!-- Quiz-Interface -->
+                    <div id="quizInterface">
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
+                        </div>
+                        <div class="progress-label" id="progressLabel">Frage 1 von 25</div>
+
+                        <div class="quiz-card">
+                            <div class="anime-label" id="animeLabel">One Piece</div>
+                            <div class="question-text" id="questionText">Lädt...</div>
+                            <div class="answers-grid" id="answersGrid"></div>
+                            <div class="feedback" id="feedback"></div>
+                            <div class="text-center">
+                                <button class="btn-weiter" id="btnWeiter">Nächste Frage →</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ergebnis -->
+                    <div id="ergebnis" class="quiz-card">
+                        <div class="ergebnis-kreis">
+                            <div class="ergebnis-punkte" id="ergebnisPunkte">0</div>
+                            <div class="ergebnis-von" id="ergebnisvon">von 25</div>
+                        </div>
+                        <div class="ergebnis-titel" id="ergebnisTitel">Ergebnis</div>
+                        <p class="ergebnis-text" id="ergebnisText"></p>
+                        <button class="btn-neustart" onclick="neustarten()">Nochmal spielen 🔄</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Footer ───────────────────────────────────────── -->
+    <footer>
+        <div class="footer-brand">Anime Aktuell</div>
+        <div style="margin:0.3rem 0;">
+            <a href="impressum.html" style="color:rgba(192,192,192,0.5);font-size:0.8rem;text-decoration:none;">Impressum</a>
+        </div>
+        <small>Ein Schulprojekt &bull; Alle Rechte vorbehalten</small>
+    </footer>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ── Alle Fragen ────────────────────────────────────────────
+        const alleFragen = [
+            // One Piece
+            {
+                anime: "One Piece",
+                frage: "Wie heißt der Kapitän der Strohhutbande?",
+                antworten: ["Roronoa Zoro", "Trafalgar Law", "Monkey D. Ruffy", "Portgas D. Ace"],
+                richtig: 2
+            },
+            {
+                anime: "One Piece",
+                frage: "Welche Teufelsfrucht hat Ruffy gegessen?",
+                antworten: ["Flam-Flam-Frucht", "Gum-Gum-Frucht", "Logia-Frucht", "Zoom-Zoom-Frucht"],
+                richtig: 1
+            },
+            {
+                anime: "One Piece",
+                frage: "Was ist Ruffys großer Traum?",
+                antworten: ["Das stärkste Schwert zu finden", "Der beste Koch zu werden", "König der Piraten zu werden", "Den One Piece zu verkaufen"],
+                richtig: 2
+            },
+
+            // Demon Slayer
+            {
+                anime: "Demon Slayer",
+                frage: "Wie heißt der Hauptcharakter in Demon Slayer?",
+                antworten: ["Zenitsu Agatsuma", "Inosuke Hashibira", "Tanjiro Kamado", "Giyu Tomioka"],
+                richtig: 2
+            },
+            {
+                anime: "Demon Slayer",
+                frage: "Wie heißt der stärkste Dämon in Demon Slayer?",
+                antworten: ["Akaza", "Doma", "Kokushibo", "Muzan Kibutsuji"],
+                richtig: 3
+            },
+            {
+                anime: "Demon Slayer",
+                frage: "Welche Atemtechnik beherrscht Tanjiro zuerst?",
+                antworten: ["Feuer-Atmung", "Blitz-Atmung", "Wasser-Atmung", "Wind-Atmung"],
+                richtig: 2
+            },
+
+            // Naruto
+            {
+                anime: "Naruto",
+                frage: "Welches Wesen ist in Naruto versiegelt?",
+                antworten: ["Der Acht-Schwanz-Oktopus", "Der Neun-Schwanz-Fuchs", "Der Sieben-Schwanz-Käfer", "Der Fünf-Schwanz-Delfin"],
+                richtig: 1
+            },
+            {
+                anime: "Naruto",
+                frage: "Was ist Narutos größter Traum?",
+                antworten: ["Der stärkste Ninja aller Zeiten zu sein", "Sasuke zurückzubringen", "Hokage zu werden", "Das Dorf zu verlassen"],
+                richtig: 2
+            },
+            {
+                anime: "Naruto",
+                frage: "Aus welchem Dorf kommt Naruto?",
+                antworten: ["Sanddorf", "Steindorf", "Wolkendorf", "Blätterdorf"],
+                richtig: 3
+            },
+
+            // Spy × Family
+            {
+                anime: "Spy × Family",
+                frage: "Welche besondere Fähigkeit hat Anya in Spy × Family?",
+                antworten: ["Sie kann fliegen", "Sie ist unsichtbar", "Sie kann Gedanken lesen", "Sie ist superstark"],
+                richtig: 2
+            },
+            {
+                anime: "Spy × Family",
+                frage: "Was ist Yors Geheimnis in Spy × Family?",
+                antworten: ["Sie ist eine Ärztin", "Sie ist eine Auftragskillerin", "Sie ist eine Spionin", "Sie ist eine Magierin"],
+                richtig: 1
+            },
+            {
+                anime: "Spy × Family",
+                frage: "Welchen Decknamen hat Loid als Spion?",
+                antworten: ["Shadow", "Phantom", "Ghost", "Twilight"],
+                richtig: 3
+            },
+
+            // Jujutsu Kaisen
+            {
+                anime: "Jujutsu Kaisen",
+                frage: "Wie heißt der Hauptcharakter in Jujutsu Kaisen?",
+                antworten: ["Megumi Fushiguro", "Nobara Kugisaki", "Yuji Itadori", "Satoru Gojo"],
+                richtig: 2
+            },
+            {
+                anime: "Jujutsu Kaisen",
+                frage: "Wessen Finger verschluckt Yuji am Anfang der Serie?",
+                antworten: ["Gojo Satorus", "Ryomen Sukunas", "Mahitos", "Suguru Getos"],
+                richtig: 1
+            },
+            {
+                anime: "Jujutsu Kaisen",
+                frage: "Was ist Gojo Satorus berühmte Technik?",
+                antworten: ["Das Unendliche", "Der Schwarze Blitz", "Die Rote Welle", "Das Auge des Sturms"],
+                richtig: 0
+            },
+
+            // Tagebücher der Apothekerin
+            {
+                anime: "Tagebücher der Apothekerin",
+                frage: "Wie heißt die Hauptfigur in Tagebücher der Apothekerin?",
+                antworten: ["Jinshi", "Maomao", "Lihua", "Gyokuyou"],
+                richtig: 1
+            },
+            {
+                anime: "Tagebücher der Apothekerin",
+                frage: "Was ist Maomaos Spezialgebiet?",
+                antworten: ["Kampfkünste", "Astronomie", "Medizin und Gifte", "Musik"],
+                richtig: 2
+            },
+
+            // Aggretsuko
+            {
+                anime: "Aggretsuko",
+                frage: "Welches Tier ist die Hauptfigur Retsuko in Aggretsuko?",
+                antworten: ["Ein Fuchs", "Ein Waschbär", "Ein Hase", "Ein Roter Panda"],
+                richtig: 3
+            },
+            {
+                anime: "Aggretsuko",
+                frage: "Wie baut Retsuko in Aggretsuko ihren Stress ab?",
+                antworten: ["Durch Sport", "Durch Death Metal Karaoke", "Durch Kochen", "Durch Meditation"],
+                richtig: 1
+            },
+
+            // Kamikaze Kaito Jeanne
+            {
+                anime: "Kamikaze Kaito Jeanne",
+                frage: "Wessen Reinkarnation ist die Heldin Jeanne?",
+                antworten: ["Kleopatra", "Marie Curie", "Jeanne d'Arc", "Königin Elisabeth"],
+                richtig: 2
+            },
+            {
+                anime: "Kamikaze Kaito Jeanne",
+                frage: "Wie heißt Jeannes Gegenspielerin / ihr Rivale als Phantom-Dieb?",
+                antworten: ["Dark", "Phantom", "Sinbad", "Shadow"],
+                richtig: 2
+            },
+
+            // Weitere bekannte Anime
+            {
+                anime: "Dragon Ball Z",
+                frage: "Wie heißt Gokus berühmteste Verwandlung?",
+                antworten: ["Ultra Warrior", "Super Saiyajin", "Mega Kämpfer", "Hyper Ninja"],
+                richtig: 1
+            },
+            {
+                anime: "Attack on Titan",
+                frage: "Wie heißt der Hauptcharakter in Attack on Titan?",
+                antworten: ["Levi Ackermann", "Armin Arlert", "Eren Jäger", "Mikasa Ackermann"],
+                richtig: 2
+            },
+            {
+                anime: "My Hero Academia",
+                frage: "Wie lautet Dekus richtiger Nachname in My Hero Academia?",
+                antworten: ["Bakugo", "Todoroki", "Midoriya", "Kirishima"],
+                richtig: 2
+            },
+            {
+                anime: "Death Note",
+                frage: "Wie heißt das magische Notizbuch in Death Note?",
+                antworten: ["Shadow Book", "Soul Note", "Dark Page", "Death Note"],
+                richtig: 3
+            },
+        ];
+
+        // ── Quiz-Logik ─────────────────────────────────────────────
+        const BUCHSTABEN = ['A', 'B', 'C', 'D'];
+        let fragen       = [];
+        let aktuelleIdx  = 0;
+        let punkte       = 0;
+        let beantwortet  = false;
+
+        function mischen(arr) {
+            const a = [...arr];
+            for (let i = a.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [a[i], a[j]] = [a[j], a[i]];
+            }
+            return a;
+        }
+
+        function starten() {
+            fragen      = mischen(alleFragen);
+            aktuelleIdx = 0;
+            punkte      = 0;
+            beantwortet = false;
+            document.getElementById('ergebnis').style.display       = 'none';
+            document.getElementById('quizInterface').style.display  = 'block';
+            zeigeFrage();
+        }
+
+        function zeigeFrage() {
+            beantwortet = false;
+            const f     = fragen[aktuelleIdx];
+            const total = fragen.length;
+
+            // Fortschritt
+            document.getElementById('progressBar').style.width =
+                ((aktuelleIdx / total) * 100) + '%';
+            document.getElementById('progressLabel').textContent =
+                'Frage ' + (aktuelleIdx + 1) + ' von ' + total;
+
+            // Frage
+            document.getElementById('animeLabel').textContent   = f.anime;
+            document.getElementById('questionText').textContent = f.frage;
+            document.getElementById('feedback').textContent     = '';
+            document.getElementById('feedback').className       = 'feedback';
+            document.getElementById('btnWeiter').style.display  = 'none';
+
+            // Antworten
+            const grid = document.getElementById('answersGrid');
+            grid.innerHTML = '';
+            f.antworten.forEach((text, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.innerHTML = '<span class="btn-letter">' + BUCHSTABEN[i] + '</span>' + text;
+                btn.addEventListener('click', () => antworten(i, f.richtig));
+                grid.appendChild(btn);
+            });
+        }
+
+        function antworten(gewaehlt, richtig) {
+            if (beantwortet) return;
+            beantwortet = true;
+
+            const buttons  = document.querySelectorAll('.answer-btn');
+            const feedback = document.getElementById('feedback');
+
+            buttons.forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === richtig)  btn.classList.add('richtig');
+                if (i === gewaehlt && gewaehlt !== richtig) btn.classList.add('falsch');
+            });
+
+            if (gewaehlt === richtig) {
+                punkte++;
+                feedback.textContent = '✔ Richtig!';
+                feedback.className   = 'feedback richtig';
+            } else {
+                feedback.textContent = '✘ Leider falsch! Die richtige Antwort war: ' +
+                    BUCHSTABEN[richtig];
+                feedback.className   = 'feedback falsch';
+            }
+
+            const btnWeiter = document.getElementById('btnWeiter');
+            btnWeiter.style.display = 'block';
+            btnWeiter.textContent   =
+                aktuelleIdx < fragen.length - 1 ? 'Nächste Frage →' : 'Ergebnis ansehen 🏆';
+        }
+
+        document.getElementById('btnWeiter').addEventListener('click', () => {
+            aktuelleIdx++;
+            if (aktuelleIdx < fragen.length) {
+                zeigeFrage();
+            } else {
+                zeigeErgebnis();
+            }
+        });
+
+        function zeigeErgebnis() {
+            document.getElementById('progressBar').style.width = '100%';
+            document.getElementById('quizInterface').style.display = 'none';
+
+            // Scores speichern
+            localStorage.setItem('lastScore', punkte);
+            const prev = parseInt(localStorage.getItem('bestScore') || '0');
+            if (punkte > prev) localStorage.setItem('bestScore', punkte);
+
+            const total = fragen.length;
+            let titel, text;
+
+            if (punkte <= 5) {
+                titel = "Noch Anfänger 📖";
+                text  = "Kein Problem! Jeder fängt mal an. Lies einfach weiter die Anime Aktuell und komm bald wieder!";
+            } else if (punkte <= 10) {
+                titel = "Auf dem Richtigen Weg! 🌱";
+                text  = "Du kennst schon einige Animes gut! Mit etwas mehr Erfahrung wirst du ein richtiger Profi.";
+            } else if (punkte <= 15) {
+                titel = "Echter Anime-Fan! ⭐";
+                text  = "Respekt! Du kennst dich in der Anime-Welt wirklich gut aus. Weiter so!";
+            } else if (punkte <= 20) {
+                titel = "Anime-Meister! 🌟";
+                text  = "Beeindruckend! Dein Anime-Wissen ist auf einem sehr hohen Level. Fast perfekt!";
+            } else {
+                titel = "LEGENDÄR! 🏆";
+                text  = "WOW! Du bist ein wahres Anime-Genie! Perfektes Ergebnis — Anime Aktuell ist stolz auf dich!";
+            }
+
+            document.getElementById('ergebnisPunkte').textContent = punkte;
+            document.getElementById('ergebnisvon').textContent    = 'von ' + total;
+            document.getElementById('ergebnisTitel').textContent  = titel;
+            document.getElementById('ergebnisText').textContent   = text;
+            document.getElementById('ergebnis').style.display     = 'block';
+        }
+
+        function neustarten() {
+            starten();
+        }
+
+        // Quiz starten
+        starten();
+    </script>
+</body>
+</html>

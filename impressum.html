@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum – Anime Aktuell</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        :root {
+            --gold:    #FFD700;
+            --silver:  #C0C0C0;
+            --red:     #CC0000;
+            --dark-bg: #08080f;
+            --card-bg: #10101e;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--silver);
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+        }
+
+        /* ── Navbar ─────────────────────────────────── */
+        .navbar {
+            background: linear-gradient(135deg, #0a0a14, #14142a);
+            border-bottom: 2px solid var(--gold);
+        }
+        .navbar-brand {
+            color: var(--red) !important;
+            font-family: 'Bangers', cursive;
+            font-size: 1.9rem;
+            letter-spacing: 3px;
+        }
+        .nav-link {
+            color: var(--gold) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: #fff !important; }
+        .navbar-toggler { border: 1px solid var(--gold); }
+        .navbar-toggler-icon { filter: invert(80%) sepia(100%) saturate(500%) hue-rotate(0deg); }
+
+        /* ── Page Header ────────────────────────────── */
+        .page-header {
+            background: linear-gradient(135deg, #0a0a14, #1a0a2e);
+            border-bottom: 3px solid var(--gold);
+            padding: 2.5rem 0;
+            text-align: center;
+        }
+        .page-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3.5rem;
+            color: var(--red);
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0 #440000;
+            margin: 0;
+        }
+        .page-subtitle {
+            color: var(--silver);
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 5px;
+            font-size: 1rem;
+            opacity: 0.7;
+            margin-top: 0.3rem;
+        }
+
+        /* ── Gold divider ───────────────────────────── */
+        .gold-divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--silver), var(--gold), transparent);
+        }
+
+        /* ── Impressum Inhalt ───────────────────────── */
+        .impressum-section {
+            padding: 4rem 0 5rem;
+        }
+
+        .impressum-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 14px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .impressum-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--silver), var(--gold));
+        }
+
+        .imp-block {
+            margin-bottom: 2.2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255,215,0,0.1);
+        }
+        .imp-block:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .imp-label {
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 0.7rem;
+        }
+
+        .imp-text {
+            color: var(--silver);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .imp-text strong {
+            color: #fff;
+            font-weight: 600;
+        }
+        .imp-text a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        .imp-text a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        .hinweis-box {
+            background: rgba(255,215,0,0.05);
+            border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 8px;
+            padding: 1rem 1.3rem;
+            font-size: 0.9rem;
+            color: rgba(192,192,192,0.75);
+            line-height: 1.6;
+        }
+
+        /* ── Footer ─────────────────────────────────── */
+        footer {
+            background: #050508;
+            border-top: 2px solid var(--gold);
+            padding: 2rem 0;
+            text-align: center;
+            color: rgba(192,192,192,0.55);
+            font-size: 0.85rem;
+        }
+        .footer-brand {
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            color: var(--red);
+            letter-spacing: 3px;
+        }
+        .footer-links a {
+            color: rgba(192,192,192,0.5);
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin: 0 0.5rem;
+        }
+        .footer-links a:hover { color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────── -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Anime Aktuell</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    aria-controls="navMenu" aria-expanded="false" aria-label="Menü">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Startseite</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ausgaben.html">Ausgaben</a></li>
+                    <li class="nav-item"><a class="nav-link" href="empfehlungen.html">Empfehlungen</a></li>
+                    <li class="nav-item"><a class="nav-link" href="extras.html">Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Page Header ─────────────────────────────────── -->
+    <div class="page-header">
+        <h1 class="page-title">Impressum</h1>
+        <p class="page-subtitle">Angaben gemäß § 5 TMG</p>
+    </div>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Impressum Inhalt ─────────────────────────────── -->
+    <section class="impressum-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-9 col-lg-7">
+                    <div class="impressum-card">
+
+                        <!-- Betreiber -->
+                        <div class="imp-block">
+                            <div class="imp-label">Betreiber</div>
+                            <div class="imp-text">
+                                <strong>Joshua Beister</strong><br>
+                                c/o Wilhelm-Leuschner-Schule Niestetal<br>
+                                Karl-Marx-Straße 32<br>
+                                34266 Niestetal<br>
+                                Deutschland
+                            </div>
+                        </div>
+
+                        <!-- Kontakt -->
+                        <div class="imp-block">
+                            <div class="imp-label">Kontakt</div>
+                            <div class="imp-text">
+                                E-Mail: <a href="mailto:joshua@beisters.de">joshua@beisters.de</a>
+                            </div>
+                        </div>
+
+                        <!-- Schulprojekt -->
+                        <div class="imp-block">
+                            <div class="imp-label">Hinweis</div>
+                            <div class="hinweis-box">
+                                Diese Webseite ist ein <strong>Schulprojekt</strong> der
+                                <strong>Wilhelm-Leuschner-Schule Niestetal</strong> und wurde
+                                zu Bildungszwecken erstellt. Sie verfolgt keine kommerziellen
+                                Zwecke.
+                            </div>
+                        </div>
+
+                        <!-- Haftungsausschluss -->
+                        <div class="imp-block">
+                            <div class="imp-label">Haftungsausschluss</div>
+                            <div class="imp-text">
+                                Die Inhalte dieser Webseite wurden mit größter Sorgfalt erstellt.
+                                Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte
+                                kann jedoch keine Gewähr übernommen werden. Als Betreiber sind
+                                wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten
+                                verantwortlich.
+                            </div>
+                        </div>
+
+                        <!-- Urheberrecht -->
+                        <div class="imp-block">
+                            <div class="imp-label">Urheberrecht</div>
+                            <div class="imp-text">
+                                Die auf dieser Webseite selbst erstellten Inhalte und Werke
+                                unterliegen dem deutschen Urheberrecht. Anime-Namen, Charaktere
+                                und Marken sind Eigentum ihrer jeweiligen Rechteinhaber und
+                                werden hier ausschließlich zu Informations- und Bildungszwecken
+                                erwähnt.
+                            </div>
+                        </div>
+
+                        <!-- Unterstützung -->
+                        <div class="imp-block">
+                            <div class="imp-label">Unterstützung</div>
+                            <div class="imp-text">
+                                Diese Webseite wurde von <strong>Joshua Beister</strong> konzipiert
+                                und gestaltet. Bei der Umsetzung wurde er unterstützt von
+                                <strong>Claude</strong>, einem KI-Assistenten des Unternehmens
+                                <strong>Anthropic</strong>. Claude hat dabei den gesamten
+                                HTML- und CSS-Code geschrieben, die Quiz-Fragen generiert sowie
+                                die Empfehlungstexte auf Basis von Joshuans eigenen Ideen
+                                und Angaben ausformuliert. Die ursprünglich von Claude erstellte
+                                Top-5-Manga-Liste enthielt einen Fehler — Berserk und Vagabond
+                                wurden fälschlicherweise als meistverkaufte Mangas aufgeführt.
+                                Nach kritischer Nachfrage von Joshua wurde die Liste anhand
+                                echter Verkaufszahlen korrigiert.
+                            </div>
+                        </div>
+
+                        <!-- Stand -->
+                        <div class="imp-block">
+                            <div class="imp-label">Stand</div>
+                            <div class="imp-text">April 2026</div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Footer ───────────────────────────────────────── -->
+    <footer>
+        <div class="footer-brand">Anime Aktuell</div>
+        <div class="footer-links mt-1">
+            <a href="impressum.html">Impressum</a>
+        </div>
+        <small>Ein Schulprojekt &bull; Alle Rechte vorbehalten</small>
+    </footer>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

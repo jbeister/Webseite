@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Aktuell</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Oswald:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <style>
+        :root {
+            --gold:    #FFD700;
+            --silver:  #C0C0C0;
+            --red:     #CC0000;
+            --dark-bg: #08080f;
+            --card-bg: #10101e;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--silver);
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+        }
+
+        /* ── Navbar ─────────────────────────────────── */
+        .navbar {
+            background: linear-gradient(135deg, #0a0a14, #14142a);
+            border-bottom: 2px solid var(--gold);
+        }
+        .navbar-brand {
+            color: var(--red) !important;
+            font-family: 'Bangers', cursive;
+            font-size: 1.9rem;
+            letter-spacing: 3px;
+        }
+        .nav-link {
+            color: var(--gold) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .nav-link:hover { color: #fff !important; }
+        .navbar-toggler { border: 1px solid var(--gold); }
+        .navbar-toggler-icon { filter: invert(80%) sepia(100%) saturate(500%) hue-rotate(0deg); }
+
+        /* ── Hero ────────────────────────────────────── */
+        .hero {
+            min-height: 85vh;
+            background: radial-gradient(ellipse at 30% 50%, #1a0a2e 0%, #08080f 60%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid var(--gold);
+        }
+        /* subtle diagonal gold lines */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                55deg,
+                transparent,
+                transparent 120px,
+                rgba(255,215,0,0.025) 120px,
+                rgba(255,215,0,0.025) 121px
+            );
+            pointer-events: none;
+        }
+
+        /* ── Logo ────────────────────────────────────── */
+        .logo-wrapper {
+            display: inline-flex;
+            align-items: center;
+            line-height: 1;
+        }
+        .logo-big-a {
+            font-family: 'Bangers', cursive;
+            font-size: 13rem;
+            color: var(--red);
+            text-shadow:
+                0 0 40px rgba(204,0,0,0.9),
+                4px 4px 0 #880000,
+                8px 8px 0 #440000;
+            flex-shrink: 0;
+            user-select: none;
+        }
+        .logo-side {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 11rem;
+            padding: 1.2rem 0;
+            margin-left: 4px;
+        }
+        .logo-nime,
+        .logo-ktuell {
+            font-family: 'Bangers', cursive;
+            font-size: 4.2rem;
+            color: var(--gold);
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0 #7a5200;
+            user-select: none;
+        }
+
+        .tagline {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.3rem;
+            color: var(--silver);
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        /* ── Score-Anzeige ───────────────────────────── */
+        .score-mini {
+            display: none;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 0.8rem;
+        }
+        .score-badge {
+            background: rgba(255,215,0,0.07);
+            border: 1px solid rgba(255,215,0,0.3);
+            border-radius: 20px;
+            padding: 0.25rem 0.9rem;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--silver);
+            white-space: nowrap;
+        }
+        .score-badge span { color: var(--gold); }
+
+        /* ── Anime Eyes ──────────────────────────────── */
+        .eyes-container {
+            display: flex;
+            gap: 2.5rem;
+            justify-content: center;
+        }
+
+        .anime-eye-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Upper eyelash spikes */
+        .eyelashes {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 2px;
+        }
+        .lash {
+            width: 3px;
+            background: #111;
+            border-radius: 2px;
+        }
+        .lash:nth-child(1) { height: 10px; transform: rotate(-20deg); }
+        .lash:nth-child(2) { height: 14px; transform: rotate(-8deg); }
+        .lash:nth-child(3) { height: 16px; }
+        .lash:nth-child(4) { height: 14px; transform: rotate(8deg); }
+        .lash:nth-child(5) { height: 10px; transform: rotate(20deg); }
+
+        .anime-eye {
+            width: 128px;
+            height: 72px;
+            background: #f0f0f0;
+            /* länglicher, eckiger Anime-Augen-Stil */
+            border-radius: 18% 18% 32% 32% / 14% 14% 62% 62%;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #111;
+            box-shadow: 0 0 25px rgba(255,215,0,0.5);
+        }
+
+        /* dark upper lid */
+        .eye-lid {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 35%;
+            background: #111;
+            border-radius: 0 0 50% 50%;
+            z-index: 4;
+        }
+
+        .iris {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            position: absolute;
+            top: 62%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: irisColor 10s ease-in-out infinite;
+            z-index: 1;
+        }
+        /* Right eye starts half a cycle later so eyes don't sync */
+        .anime-eye.eye-right .iris {
+            animation-delay: -5s;
+        }
+
+        .pupil {
+            width: 24px;
+            height: 24px;
+            background: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        .eye-shine {
+            width: 16px; height: 16px;
+            background: rgba(255,255,255,0.95);
+            border-radius: 50%;
+            position: absolute;
+            top: 15%; left: 18%;
+            z-index: 3;
+        }
+        .eye-shine-sm {
+            width: 8px; height: 8px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            position: absolute;
+            top: 55%; left: 62%;
+            z-index: 3;
+        }
+
+        @keyframes irisColor {
+            0%   { background: radial-gradient(circle at 40% 40%, #88aaff, #0033cc); box-shadow: 0 0 18px #4466ff; }
+            20%  { background: radial-gradient(circle at 40% 40%, #66ffaa, #006633); box-shadow: 0 0 18px #44ee88; }
+            40%  { background: radial-gradient(circle at 40% 40%, #ff6666, #cc0000); box-shadow: 0 0 18px #ff3333; }
+            60%  { background: radial-gradient(circle at 40% 40%, #cc66ff, #660099); box-shadow: 0 0 18px #aa33ff; }
+            80%  { background: radial-gradient(circle at 40% 40%, #ffaadd, #cc0077); box-shadow: 0 0 18px #ff66bb; }
+            100% { background: radial-gradient(circle at 40% 40%, #88aaff, #0033cc); box-shadow: 0 0 18px #4466ff; }
+        }
+
+        /* ── Gold divider ─────────────────────────────── */
+        .gold-divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), var(--silver), var(--gold), transparent);
+        }
+
+        /* ── Content section ──────────────────────────── */
+        .content-section {
+            background: #0b0b18;
+            padding: 4rem 0;
+        }
+        .section-title {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            color: var(--red);
+            letter-spacing: 4px;
+            text-shadow: 2px 2px 0 #440000;
+        }
+
+        .anime-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,215,0,0.25);
+            border-radius: 10px;
+            padding: 1.6rem 1.4rem;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+        }
+        .anime-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, var(--gold), var(--silver), var(--gold));
+        }
+        .anime-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 35px rgba(255,215,0,0.18);
+        }
+        .card-icon  { font-size: 2.4rem; margin-bottom: 0.4rem; }
+        .card-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.7rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+        }
+        .card-text  { color: var(--silver); font-size: 0.93rem; line-height: 1.5; }
+        .card-link  { color: var(--gold); text-decoration: none; font-weight: 600; }
+        .card-link:hover { color: #fff; }
+
+        /* ── Footer ───────────────────────────────────── */
+        footer {
+            background: #050508;
+            border-top: 2px solid var(--gold);
+            padding: 2rem 0;
+            text-align: center;
+            color: rgba(192,192,192,0.55);
+            font-size: 0.85rem;
+        }
+        footer .footer-brand {
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            color: var(--red);
+            letter-spacing: 3px;
+        }
+
+        /* ── Top-Listen Section ──────────────────────── */
+        .toplisten-section {
+            background: #0d0d1a;
+            padding: 4rem 0;
+        }
+        .liste-title {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            letter-spacing: 4px;
+            color: var(--gold);
+            text-shadow: 2px 2px 0 #7a5200;
+            margin-bottom: 1.2rem;
+        }
+        .rank-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,215,0,0.18);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .rank-item:hover {
+            border-color: var(--gold);
+            transform: translateX(5px);
+        }
+        .rank-num {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: var(--red);
+            line-height: 1;
+            min-width: 36px;
+            text-align: center;
+            text-shadow: 1px 1px 0 #440000;
+        }
+        .rank-num.gold-num   { color: var(--gold); }
+        .rank-num.silver-num { color: var(--silver); }
+        .rank-content-title {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #fff;
+            margin-bottom: 0.2rem;
+        }
+        .rank-content-desc {
+            font-size: 0.85rem;
+            color: rgba(192,192,192,0.72);
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        /* ── Responsive tweaks ────────────────────────── */
+        @media (max-width: 575px) {
+            .logo-big-a         { font-size: 7.5rem; }
+            .logo-nime,
+            .logo-ktuell        { font-size: 2.5rem; }
+            .logo-side          { height: 6.5rem; padding: 0.7rem 0; }
+            .anime-eye          { width: 90px; height: 52px; }
+            .iris               { width: 38px; height: 38px; }
+            .section-title      { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navbar ──────────────────────────────────────── -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Anime Aktuell</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    aria-controls="navMenu" aria-expanded="false" aria-label="Menü">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto gap-2">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Startseite</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ausgaben.html">Ausgaben</a></li>
+                    <li class="nav-item"><a class="nav-link" href="extras.html">Quiz</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ── Hero ────────────────────────────────────────── -->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center gy-5">
+
+                <!-- Logo -->
+                <div class="col-12 col-md-6 text-center">
+                    <div class="logo-wrapper">
+                        <span class="logo-big-a">A</span>
+                        <div class="logo-side">
+                            <span class="logo-nime">nime</span>
+                            <span class="logo-ktuell">ktuell</span>
+                        </div>
+                    </div>
+                    <p class="tagline mt-2">Dein Anime &mdash; Immer Aktuell</p>
+                    <div class="score-mini" id="scoreMini">
+                        <div class="score-badge">🏆 Bester Score: <span id="bestScore">—</span>/25</div>
+                        <div class="score-badge">🕐 Letzter Score: <span id="lastScore">—</span>/25</div>
+                    </div>
+                </div>
+
+                <!-- Anime Eyes -->
+                <div class="col-12 col-md-6 d-flex flex-column align-items-center gap-2">
+                    <div class="eyes-container">
+
+                        <!-- Left Eye -->
+                        <div class="anime-eye-wrap">
+                            <div class="eyelashes">
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                            </div>
+                            <div class="anime-eye eye-left">
+                                <div class="eye-lid"></div>
+                                <div class="iris">
+                                    <div class="pupil"></div>
+                                    <div class="eye-shine"></div>
+                                    <div class="eye-shine-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Eye -->
+                        <div class="anime-eye-wrap">
+                            <div class="eyelashes">
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                                <div class="lash"></div>
+                            </div>
+                            <div class="anime-eye eye-right">
+                                <div class="eye-lid"></div>
+                                <div class="iris">
+                                    <div class="pupil"></div>
+                                    <div class="eye-shine"></div>
+                                    <div class="eye-shine-sm"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <p class="mt-3" style="color:rgba(192,192,192,0.6);letter-spacing:3px;font-size:.85rem;text-transform:uppercase;">
+                        News &bull; Reviews &bull; Quiz
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Content Cards ────────────────────────────────── -->
+    <section class="content-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Was dich erwartet</h2>
+            <div class="row g-4">
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="anime-card">
+                        <div class="card-icon">📰</div>
+                        <div class="card-title">News</div>
+                        <p class="card-text">Die neuesten Nachrichten aus der Anime-Welt – immer frisch und auf dem Stand.</p>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="anime-card">
+                        <div class="card-icon">⭐</div>
+                        <div class="card-title">Empfehlungen</div>
+                        <p class="card-text">Die besten Anime-Serien und Filme – ausgewählt und ehrlich bewertet.</p>
+                        <a class="card-link" href="empfehlungen.html">→ Zu den Empfehlungen</a>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="anime-card">
+                        <div class="card-icon">📖</div>
+                        <div class="card-title">Ausgaben</div>
+                        <p class="card-text">Alle Ausgaben der Anime Aktuell – jetzt auch digital zum Lesen verfügbar.</p>
+                        <a class="card-link" href="ausgaben.html">→ Zu den Ausgaben</a>
+                    </div>
+                </div>
+
+                <div class="col-12 col-sm-6 col-lg-3">
+                    <div class="anime-card">
+                        <div class="card-icon">🎮</div>
+                        <div class="card-title">Quiz</div>
+                        <p class="card-text">Teste dein Anime-Wissen! Fragen aus der Zeitschrift und zum Nebenbei-Spielen.</p>
+                        <a class="card-link" href="extras.html">→ Zum Quiz</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Top-Listen ───────────────────────────────────── -->
+    <section class="toplisten-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Die Besten der Besten</h2>
+            <div class="row g-5">
+
+                <!-- Beliebteste Anime -->
+                <div class="col-12 col-lg-6">
+                    <div class="liste-title">🏆 Beliebteste Anime</div>
+
+                    <div class="rank-item">
+                        <div class="rank-num gold-num">1</div>
+                        <div>
+                            <div class="rank-content-title">One Piece</div>
+                            <p class="rank-content-desc">Die epische Abenteuerreise von Monkey D. Ruffy und seiner Strohhutbande gilt weltweit als einer der erfolgreichsten Anime aller Zeiten. Mit über 1.000 Folgen begeistert die Serie seit 1999 Millionen von Fans auf der ganzen Welt.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num silver-num">2</div>
+                        <div>
+                            <div class="rank-content-title">Naruto</div>
+                            <p class="rank-content-desc">Die Geschichte des jungen Ninjas Naruto Uzumaki, der davon träumt, der Hokage seines Dorfes zu werden, hat eine ganze Generation geprägt. Naruto gehört bis heute zu den meistgesehenen Anime-Serien weltweit.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num">3</div>
+                        <div>
+                            <div class="rank-content-title">Dragon Ball</div>
+                            <p class="rank-content-desc">Akira Toriyamas legendäre Serie rund um Son-Goku ist ein echter Meilenstein der Anime-Geschichte. Die actionreichen Kämpfe und unvergesslichen Charaktere begeistern Fans bereits seit den 1980er-Jahren.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num">4</div>
+                        <div>
+                            <div class="rank-content-title">Demon Slayer</div>
+                            <p class="rank-content-desc">Mit atemberaubender Animation und einer packenden Handlung hat Demon Slayer in kürzester Zeit die Anime-Welt im Sturm erobert und gehört heute zu den erfolgreichsten modernen Serien überhaupt.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num">5</div>
+                        <div>
+                            <div class="rank-content-title">Jujutsu Kaisen</div>
+                            <p class="rank-content-desc">Die düstere und actiongeladene Geschichte um Yuji Itadori und die Welt der Flüche ist einer der meistgefeierten Anime der letzten Jahre und begeistert weltweit Millionen von Zuschauern.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Beliebteste Manga -->
+                <div class="col-12 col-lg-6">
+                    <div class="liste-title">📚 Beliebteste Manga</div>
+
+                    <div class="rank-item">
+                        <div class="rank-num gold-num">1</div>
+                        <div>
+                            <div class="rank-content-title">One Piece</div>
+                            <p class="rank-content-desc">Mit über 500 Millionen verkauften Exemplaren ist One Piece der meistverkaufte Manga aller Zeiten – und das Abenteuer ist noch lange nicht zu Ende.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num silver-num">2</div>
+                        <div>
+                            <div class="rank-content-title">Dragon Ball</div>
+                            <p class="rank-content-desc">Mit über 260 Millionen verkauften Exemplaren ist Akira Toriyamas Kultwerk einer der meistverkauften Mangas der Geschichte und hat die gesamte Popkultur nachhaltig geprägt.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num">3</div>
+                        <div>
+                            <div class="rank-content-title">Naruto</div>
+                            <p class="rank-content-desc">Rund 250 Millionen verkaufte Exemplare sprechen für sich: Die Geschichte des jungen Ninjas Naruto Uzumaki gehört zu den erfolgreichsten Mangas, die je erschienen sind.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num">4</div>
+                        <div>
+                            <div class="rank-content-title">Detective Conan</div>
+                            <p class="rank-content-desc">Mit rund 230 Millionen verkauften Bänden ist Detective Conan eine der langlebigsten und beliebtesten Manga-Serien der Welt – und läuft noch immer.</p>
+                        </div>
+                    </div>
+
+                    <div class="rank-item">
+                        <div class="rank-num">5</div>
+                        <div>
+                            <div class="rank-content-title">Fullmetal Alchemist</div>
+                            <p class="rank-content-desc">Die Geschichte der Brüder Edward und Alphonse Elric verbindet packende Action mit tiefgründigen Themen wie Verlust und Freundschaft – mit rund 80 Millionen Exemplaren ein weltweiter Bestseller.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="gold-divider"></div>
+
+    <!-- ── Footer ───────────────────────────────────────── -->
+    <footer>
+        <div class="footer-brand">Anime Aktuell</div>
+        <div style="margin:0.3rem 0;">
+            <a href="impressum.html" style="color:rgba(192,192,192,0.5);font-size:0.8rem;text-decoration:none;">Impressum</a>
+        </div>
+        <small>Ein Schulprojekt &bull; Alle Rechte vorbehalten</small>
+    </footer>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+        // ── Quiz-Score anzeigen ────────────────────────
+        const best = localStorage.getItem('bestScore');
+        const last = localStorage.getItem('lastScore');
+        if (best !== null || last !== null) {
+            document.getElementById('scoreMini').style.display = 'flex';
+            if (best !== null) document.getElementById('bestScore').textContent = best;
+            if (last !== null) document.getElementById('lastScore').textContent = last;
+        }
+
+    </script>
+</body>
+</html>
