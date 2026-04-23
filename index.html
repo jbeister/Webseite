@@ -282,6 +282,12 @@
             transform: translateY(-6px);
             box-shadow: 0 12px 35px rgba(255,215,0,0.18);
         }
+        .anime-card.no-hover:hover {
+            border-color: rgba(255,215,0,0.25);
+            transform: none;
+            box-shadow: none;
+            cursor: default;
+        }
         .card-icon  { font-size: 2.4rem; margin-bottom: 0.4rem; }
         .card-title {
             font-family: 'Bebas Neue', cursive;
@@ -477,7 +483,7 @@
             <div class="row g-4">
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="anime-card">
+                    <div class="anime-card no-hover">
                         <div class="card-icon">📰</div>
                         <div class="card-title">News</div>
                         <p class="card-text">Die neuesten Nachrichten aus der Anime-Welt – immer frisch und auf dem Stand.</p>
