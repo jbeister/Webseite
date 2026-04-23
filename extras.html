@@ -224,6 +224,116 @@
         }
         .btn-weiter:hover { opacity: 0.85; transform: scale(1.04); }
 
+        /* ── Themen-Auswahl ─────────────────────────── */
+        .themen-titel {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: var(--gold);
+            letter-spacing: 4px;
+            margin-bottom: 0.4rem;
+        }
+        .themen-info {
+            color: var(--silver);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.2rem;
+        }
+        .themen-info strong { color: #fff; }
+
+        .btn-mini-wrap {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .btn-mini {
+            background: rgba(255,215,0,0.12);
+            border: 1px solid rgba(255,215,0,0.3);
+            color: var(--gold);
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            padding: 0.25rem 0.9rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn-mini:hover { background: rgba(255,215,0,0.25); }
+        .btn-mini-out {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(192,192,192,0.2);
+            color: rgba(192,192,192,0.6);
+        }
+        .btn-mini-out:hover { background: rgba(255,255,255,0.1); }
+
+        .themen-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+        .themen-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(255,215,0,0.2);
+            border-radius: 40px;
+            padding: 0.45rem 0.9rem;
+            cursor: pointer;
+            transition: background 0.18s, border-color 0.18s;
+            user-select: none;
+        }
+        .themen-check input[type="checkbox"] { display: none; }
+        .themen-check.aktiv {
+            background: rgba(255,215,0,0.12);
+            border-color: var(--gold);
+        }
+        .themen-check:hover { border-color: rgba(255,215,0,0.55); }
+        .themen-name {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 0.92rem;
+            color: var(--silver);
+        }
+        .themen-check.aktiv .themen-name { color: var(--gold); }
+        .themen-anzahl {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.8rem;
+            color: rgba(192,192,192,0.45);
+            letter-spacing: 1px;
+        }
+        .themen-check.aktiv .themen-anzahl { color: rgba(255,215,0,0.55); }
+
+        .themen-zaehler {
+            text-align: center;
+            font-family: 'Bebas Neue', cursive;
+            letter-spacing: 3px;
+            font-size: 1.1rem;
+            color: var(--silver);
+            margin-bottom: 1rem;
+        }
+        .themen-zaehler.genug   { color: var(--green); }
+        .themen-zaehler.zuwenig { color: var(--wrong); }
+
+        .btn-quiz-start {
+            background: linear-gradient(135deg, var(--gold), #b08800);
+            color: #0a0a0f;
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            border: none;
+            padding: 0.55rem 2.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .btn-quiz-start:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        .btn-quiz-start:not(:disabled):hover { opacity: 0.85; transform: scale(1.04); }
+
         /* ── Ergebnis-Screen ────────────────────────── */
         #ergebnis {
             display: none;
@@ -269,6 +379,12 @@
             margin: 0 auto 2rem;
             line-height: 1.5;
         }
+        .ergebnis-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+        }
         .btn-neustart {
             background: linear-gradient(135deg, var(--red), #880000);
             color: #fff;
@@ -282,6 +398,22 @@
             transition: opacity 0.2s, transform 0.15s;
         }
         .btn-neustart:hover { opacity: 0.85; transform: scale(1.04); }
+        .btn-themen-aendern {
+            background: transparent;
+            border: 1.5px solid rgba(255,215,0,0.4);
+            color: var(--gold);
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.18s, border-color 0.18s;
+        }
+        .btn-themen-aendern:hover {
+            background: rgba(255,215,0,0.08);
+            border-color: var(--gold);
+        }
 
         /* ── Footer ─────────────────────────────────── */
         footer {
@@ -325,7 +457,7 @@
     <!-- ── Page Header ─────────────────────────────────── -->
     <div class="page-header">
         <h1 class="page-title">Anime Quiz</h1>
-        <p class="page-subtitle">Teste dein Wissen &bull; 10 zufällige Fragen aus 55</p>
+        <p class="page-subtitle">Wähle deine Themen &bull; 10 zufällige Fragen</p>
     </div>
 
     <div class="gold-divider"></div>
@@ -336,12 +468,36 @@
             <div class="row justify-content-center">
                 <div class="col-12 col-md-8 col-lg-7">
 
+                    <!-- Themen-Auswahl -->
+                    <div id="themenScreen" class="quiz-card" style="display:none;">
+                        <div class="themen-titel">Themen wählen</div>
+                        <p class="themen-info">
+                            Wähle, aus welchen Anime-Themen dein Quiz bestehen soll.<br>
+                            Du brauchst mindestens <strong>10 verfügbare Fragen</strong>.
+                        </p>
+
+                        <div class="btn-mini-wrap">
+                            <button class="btn-mini" onclick="allesAuswaehlen()">✔ Alle</button>
+                            <button class="btn-mini btn-mini-out" onclick="keinesAuswaehlen()">✖ Keine</button>
+                        </div>
+
+                        <div class="themen-grid" id="themenGrid"></div>
+
+                        <div class="themen-zaehler" id="themenZaehler">0 Fragen verfügbar</div>
+
+                        <div class="text-center">
+                            <button class="btn-quiz-start" id="btnQuizStart" disabled onclick="themenBestaetigen()">
+                                Quiz starten ▶
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Quiz-Interface -->
-                    <div id="quizInterface">
+                    <div id="quizInterface" style="display:none;">
                         <div class="progress-bar-wrap">
                             <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
                         </div>
-                        <div class="progress-label" id="progressLabel">Frage 1 von 25</div>
+                        <div class="progress-label" id="progressLabel">Frage 1 von 10</div>
 
                         <div class="quiz-card">
                             <div class="anime-label" id="animeLabel">One Piece</div>
@@ -358,11 +514,14 @@
                     <div id="ergebnis" class="quiz-card">
                         <div class="ergebnis-kreis">
                             <div class="ergebnis-punkte" id="ergebnisPunkte">0</div>
-                            <div class="ergebnis-von" id="ergebnisvon">von 25</div>
+                            <div class="ergebnis-von" id="ergebnisvon">von 10</div>
                         </div>
                         <div class="ergebnis-titel" id="ergebnisTitel">Ergebnis</div>
                         <p class="ergebnis-text" id="ergebnisText"></p>
-                        <button class="btn-neustart" onclick="neustarten()">Nochmal spielen 🔄</button>
+                        <div class="ergebnis-buttons">
+                            <button class="btn-neustart" onclick="neustarten()">Nochmal spielen 🔄</button>
+                            <button class="btn-themen-aendern" onclick="zeigeThemenAuswahl()">Themen ändern ⚙</button>
+                        </div>
                     </div>
 
                 </div>
@@ -386,396 +545,107 @@
         // ── Alle Fragen ────────────────────────────────────────────
         const alleFragen = [
             // One Piece
-            {
-                anime: "One Piece",
-                frage: "Wie heißt der Kapitän der Strohhutbande?",
-                antworten: ["Roronoa Zoro", "Trafalgar Law", "Monkey D. Ruffy", "Portgas D. Ace"],
-                richtig: 2
-            },
-            {
-                anime: "One Piece",
-                frage: "Welche Teufelsfrucht hat Ruffy gegessen?",
-                antworten: ["Flam-Flam-Frucht", "Gum-Gum-Frucht", "Logia-Frucht", "Zoom-Zoom-Frucht"],
-                richtig: 1
-            },
-            {
-                anime: "One Piece",
-                frage: "Was ist Ruffys großer Traum?",
-                antworten: ["Das stärkste Schwert zu finden", "Der beste Koch zu werden", "König der Piraten zu werden", "Den One Piece zu verkaufen"],
-                richtig: 2
-            },
+            { anime: "One Piece", frage: "Wie heißt der Kapitän der Strohhutbande?", antworten: ["Roronoa Zoro", "Trafalgar Law", "Monkey D. Ruffy", "Portgas D. Ace"], richtig: 2 },
+            { anime: "One Piece", frage: "Welche Teufelsfrucht hat Ruffy gegessen?", antworten: ["Flam-Flam-Frucht", "Gum-Gum-Frucht", "Logia-Frucht", "Zoom-Zoom-Frucht"], richtig: 1 },
+            { anime: "One Piece", frage: "Was ist Ruffys großer Traum?", antworten: ["Das stärkste Schwert zu finden", "Der beste Koch zu werden", "König der Piraten zu werden", "Den One Piece zu verkaufen"], richtig: 2 },
+            { anime: "One Piece", frage: "Wie heißt der Koch der Strohhutbande?", antworten: ["Usopp", "Sanji", "Franky", "Brook"], richtig: 1 },
+            { anime: "One Piece", frage: "Wie viele Schwerter trägt Roronoa Zoro?", antworten: ["1", "2", "3", "4"], richtig: 2 },
+            { anime: "One Piece", frage: "Was ist Namis Spezialgebiet an Bord?", antworten: ["Kochen", "Kämpfen", "Navigation", "Medizin"], richtig: 2 },
+            { anime: "One Piece", frage: "Wie heißt Ruffys Bruder?", antworten: ["Portgas D. Ace", "Trafalgar Law", "Sabo", "Shanks"], richtig: 0 },
 
             // Demon Slayer
-            {
-                anime: "Demon Slayer",
-                frage: "Wie heißt der Hauptcharakter in Demon Slayer?",
-                antworten: ["Zenitsu Agatsuma", "Inosuke Hashibira", "Tanjiro Kamado", "Giyu Tomioka"],
-                richtig: 2
-            },
-            {
-                anime: "Demon Slayer",
-                frage: "Wie heißt der stärkste Dämon in Demon Slayer?",
-                antworten: ["Akaza", "Doma", "Kokushibo", "Muzan Kibutsuji"],
-                richtig: 3
-            },
-            {
-                anime: "Demon Slayer",
-                frage: "Welche Atemtechnik beherrscht Tanjiro zuerst?",
-                antworten: ["Feuer-Atmung", "Blitz-Atmung", "Wasser-Atmung", "Wind-Atmung"],
-                richtig: 2
-            },
+            { anime: "Demon Slayer", frage: "Wie heißt der Hauptcharakter in Demon Slayer?", antworten: ["Zenitsu Agatsuma", "Inosuke Hashibira", "Tanjiro Kamado", "Giyu Tomioka"], richtig: 2 },
+            { anime: "Demon Slayer", frage: "Wie heißt der stärkste Dämon in Demon Slayer?", antworten: ["Akaza", "Doma", "Kokushibo", "Muzan Kibutsuji"], richtig: 3 },
+            { anime: "Demon Slayer", frage: "Welche Atemtechnik beherrscht Tanjiro zuerst?", antworten: ["Feuer-Atmung", "Blitz-Atmung", "Wasser-Atmung", "Wind-Atmung"], richtig: 2 },
+            { anime: "Demon Slayer", frage: "Welche Atemtechnik beherrscht Zenitsu?", antworten: ["Feuer-Atmung", "Blitz-Atmung", "Wind-Atmung", "Wasser-Atmung"], richtig: 1 },
+            { anime: "Demon Slayer", frage: "Was trägt Inosuke immer auf dem Kopf?", antworten: ["Einen Helm", "Eine Wildschweinsmaske", "Eine Kapuze", "Nichts"], richtig: 1 },
 
             // Naruto
-            {
-                anime: "Naruto",
-                frage: "Welches Wesen ist in Naruto versiegelt?",
-                antworten: ["Der Acht-Schwanz-Oktopus", "Der Neun-Schwanz-Fuchs", "Der Sieben-Schwanz-Käfer", "Der Fünf-Schwanz-Delfin"],
-                richtig: 1
-            },
-            {
-                anime: "Naruto",
-                frage: "Was ist Narutos größter Traum?",
-                antworten: ["Der stärkste Ninja aller Zeiten zu sein", "Sasuke zurückzubringen", "Hokage zu werden", "Das Dorf zu verlassen"],
-                richtig: 2
-            },
-            {
-                anime: "Naruto",
-                frage: "Aus welchem Dorf kommt Naruto?",
-                antworten: ["Sanddorf", "Steindorf", "Wolkendorf", "Blätterdorf"],
-                richtig: 3
-            },
+            { anime: "Naruto", frage: "Welches Wesen ist in Naruto versiegelt?", antworten: ["Der Acht-Schwanz-Oktopus", "Der Neun-Schwanz-Fuchs", "Der Sieben-Schwanz-Käfer", "Der Fünf-Schwanz-Delfin"], richtig: 1 },
+            { anime: "Naruto", frage: "Was ist Narutos größter Traum?", antworten: ["Der stärkste Ninja aller Zeiten zu sein", "Sasuke zurückzubringen", "Hokage zu werden", "Das Dorf zu verlassen"], richtig: 2 },
+            { anime: "Naruto", frage: "Aus welchem Dorf kommt Naruto?", antworten: ["Sanddorf", "Steindorf", "Wolkendorf", "Blätterdorf"], richtig: 3 },
+            { anime: "Naruto", frage: "Was ist Narutos Lieblingsessen?", antworten: ["Sushi", "Onigiri", "Ramen", "Tempura"], richtig: 2 },
+            { anime: "Naruto", frage: "Wie heißt Sasukes älterer Bruder?", antworten: ["Madara", "Obito", "Itachi", "Shisui"], richtig: 2 },
+            { anime: "Naruto", frage: "Welche besondere Augentechnik hat der Uchiha-Clan?", antworten: ["Byakugan", "Rinnegan", "Tenseigan", "Sharingan"], richtig: 3 },
 
             // Spy × Family
-            {
-                anime: "Spy × Family",
-                frage: "Welche besondere Fähigkeit hat Anya in Spy × Family?",
-                antworten: ["Sie kann fliegen", "Sie ist unsichtbar", "Sie kann Gedanken lesen", "Sie ist superstark"],
-                richtig: 2
-            },
-            {
-                anime: "Spy × Family",
-                frage: "Was ist Yors Geheimnis in Spy × Family?",
-                antworten: ["Sie ist eine Ärztin", "Sie ist eine Auftragskillerin", "Sie ist eine Spionin", "Sie ist eine Magierin"],
-                richtig: 1
-            },
-            {
-                anime: "Spy × Family",
-                frage: "Welchen Decknamen hat Loid als Spion?",
-                antworten: ["Shadow", "Phantom", "Ghost", "Twilight"],
-                richtig: 3
-            },
+            { anime: "Spy × Family", frage: "Welche besondere Fähigkeit hat Anya in Spy × Family?", antworten: ["Sie kann fliegen", "Sie ist unsichtbar", "Sie kann Gedanken lesen", "Sie ist superstark"], richtig: 2 },
+            { anime: "Spy × Family", frage: "Was ist Yors Geheimnis in Spy × Family?", antworten: ["Sie ist eine Ärztin", "Sie ist eine Auftragskillerin", "Sie ist eine Spionin", "Sie ist eine Magierin"], richtig: 1 },
+            { anime: "Spy × Family", frage: "Welchen Decknamen hat Loid als Spion?", antworten: ["Shadow", "Phantom", "Ghost", "Twilight"], richtig: 3 },
+            { anime: "Spy × Family", frage: "Wie heißt die Eliteschule, in die Anya soll?", antworten: ["Star Academy", "Eden Academy", "Royal School", "Crown Academy"], richtig: 1 },
+            { anime: "Spy × Family", frage: "Wie heißt Anyas Lieblingssendung im Fernsehen?", antworten: ["Ninja Wars", "Spy Wars", "Hero Force", "Galaxy Quest"], richtig: 1 },
 
             // Jujutsu Kaisen
-            {
-                anime: "Jujutsu Kaisen",
-                frage: "Wie heißt der Hauptcharakter in Jujutsu Kaisen?",
-                antworten: ["Megumi Fushiguro", "Nobara Kugisaki", "Yuji Itadori", "Satoru Gojo"],
-                richtig: 2
-            },
-            {
-                anime: "Jujutsu Kaisen",
-                frage: "Wessen Finger verschluckt Yuji am Anfang der Serie?",
-                antworten: ["Gojo Satorus", "Ryomen Sukunas", "Mahitos", "Suguru Getos"],
-                richtig: 1
-            },
-            {
-                anime: "Jujutsu Kaisen",
-                frage: "Was ist Gojo Satorus berühmte Technik?",
-                antworten: ["Das Unendliche", "Der Schwarze Blitz", "Die Rote Welle", "Das Auge des Sturms"],
-                richtig: 0
-            },
+            { anime: "Jujutsu Kaisen", frage: "Wie heißt der Hauptcharakter in Jujutsu Kaisen?", antworten: ["Megumi Fushiguro", "Nobara Kugisaki", "Yuji Itadori", "Satoru Gojo"], richtig: 2 },
+            { anime: "Jujutsu Kaisen", frage: "Wessen Finger verschluckt Yuji am Anfang der Serie?", antworten: ["Gojo Satorus", "Ryomen Sukunas", "Mahitos", "Suguru Getos"], richtig: 1 },
+            { anime: "Jujutsu Kaisen", frage: "Was ist Gojo Satorus berühmte Technik?", antworten: ["Das Unendliche", "Der Schwarze Blitz", "Die Rote Welle", "Das Auge des Sturms"], richtig: 0 },
+            { anime: "Jujutsu Kaisen", frage: "Wie heißt die Schule, die Yuji besucht?", antworten: ["Osaka Jujutsu High", "Kyoto Jujutsu High", "Tokyo Jujutsu High", "Nagoya Jujutsu High"], richtig: 2 },
+            { anime: "Jujutsu Kaisen", frage: "Wie nennt man die übernatürlichen Wesen in Jujutsu Kaisen?", antworten: ["Dämonen", "Flüche", "Geister", "Schatten"], richtig: 1 },
 
             // Tagebücher der Apothekerin
-            {
-                anime: "Tagebücher der Apothekerin",
-                frage: "Wie heißt die Hauptfigur in Tagebücher der Apothekerin?",
-                antworten: ["Jinshi", "Maomao", "Lihua", "Gyokuyou"],
-                richtig: 1
-            },
-            {
-                anime: "Tagebücher der Apothekerin",
-                frage: "Was ist Maomaos Spezialgebiet?",
-                antworten: ["Kampfkünste", "Astronomie", "Medizin und Gifte", "Musik"],
-                richtig: 2
-            },
+            { anime: "Tagebücher der Apothekerin", frage: "Wie heißt die Hauptfigur in Tagebücher der Apothekerin?", antworten: ["Jinshi", "Maomao", "Lihua", "Gyokuyou"], richtig: 1 },
+            { anime: "Tagebücher der Apothekerin", frage: "Was ist Maomaos Spezialgebiet?", antworten: ["Kampfkünste", "Astronomie", "Medizin und Gifte", "Musik"], richtig: 2 },
 
             // Aggretsuko
-            {
-                anime: "Aggretsuko",
-                frage: "Welches Tier ist die Hauptfigur Retsuko in Aggretsuko?",
-                antworten: ["Ein Fuchs", "Ein Waschbär", "Ein Hase", "Ein Roter Panda"],
-                richtig: 3
-            },
-            {
-                anime: "Aggretsuko",
-                frage: "Wie baut Retsuko in Aggretsuko ihren Stress ab?",
-                antworten: ["Durch Sport", "Durch Death Metal Karaoke", "Durch Kochen", "Durch Meditation"],
-                richtig: 1
-            },
+            { anime: "Aggretsuko", frage: "Welches Tier ist die Hauptfigur Retsuko in Aggretsuko?", antworten: ["Ein Fuchs", "Ein Waschbär", "Ein Hase", "Ein Roter Panda"], richtig: 3 },
+            { anime: "Aggretsuko", frage: "Wie baut Retsuko in Aggretsuko ihren Stress ab?", antworten: ["Durch Sport", "Durch Death Metal Karaoke", "Durch Kochen", "Durch Meditation"], richtig: 1 },
 
             // Kamikaze Kaito Jeanne
-            {
-                anime: "Kamikaze Kaito Jeanne",
-                frage: "Wessen Reinkarnation ist die Heldin Jeanne?",
-                antworten: ["Kleopatra", "Marie Curie", "Jeanne d'Arc", "Königin Elisabeth"],
-                richtig: 2
-            },
-            {
-                anime: "Kamikaze Kaito Jeanne",
-                frage: "Wie heißt Jeannes Gegenspielerin / ihr Rivale als Phantom-Dieb?",
-                antworten: ["Dark", "Phantom", "Sinbad", "Shadow"],
-                richtig: 2
-            },
-
-            // Weitere bekannte Anime
-            {
-                anime: "Dragon Ball Z",
-                frage: "Wie heißt Gokus berühmteste Verwandlung?",
-                antworten: ["Ultra Warrior", "Super Saiyajin", "Mega Kämpfer", "Hyper Ninja"],
-                richtig: 1
-            },
-            {
-                anime: "Attack on Titan",
-                frage: "Wie heißt der Hauptcharakter in Attack on Titan?",
-                antworten: ["Levi Ackermann", "Armin Arlert", "Eren Jäger", "Mikasa Ackermann"],
-                richtig: 2
-            },
-            {
-                anime: "My Hero Academia",
-                frage: "Wie lautet Dekus richtiger Nachname in My Hero Academia?",
-                antworten: ["Bakugo", "Todoroki", "Midoriya", "Kirishima"],
-                richtig: 2
-            },
-            {
-                anime: "Death Note",
-                frage: "Wie heißt das magische Notizbuch in Death Note?",
-                antworten: ["Shadow Book", "Soul Note", "Dark Page", "Death Note"],
-                richtig: 3
-            },
-
-            // ── Neue Fragen ────────────────────────────────────────
-
-            // One Piece
-            {
-                anime: "One Piece",
-                frage: "Wie heißt der Koch der Strohhutbande?",
-                antworten: ["Usopp", "Sanji", "Franky", "Brook"],
-                richtig: 1
-            },
-            {
-                anime: "One Piece",
-                frage: "Wie viele Schwerter trägt Roronoa Zoro?",
-                antworten: ["1", "2", "3", "4"],
-                richtig: 2
-            },
-            {
-                anime: "One Piece",
-                frage: "Was ist Namis Spezialgebiet an Bord?",
-                antworten: ["Kochen", "Kämpfen", "Navigation", "Medizin"],
-                richtig: 2
-            },
-            {
-                anime: "One Piece",
-                frage: "Wie heißt Ruffys Bruder?",
-                antworten: ["Portgas D. Ace", "Trafalgar Law", "Sabo", "Shanks"],
-                richtig: 0
-            },
-
-            // Demon Slayer
-            {
-                anime: "Demon Slayer",
-                frage: "Welche Atemtechnik beherrscht Zenitsu?",
-                antworten: ["Feuer-Atmung", "Blitz-Atmung", "Wind-Atmung", "Wasser-Atmung"],
-                richtig: 1
-            },
-            {
-                anime: "Demon Slayer",
-                frage: "Was trägt Inosuke immer auf dem Kopf?",
-                antworten: ["Einen Helm", "Eine Wildschweinsmaske", "Eine Kapuze", "Nichts"],
-                richtig: 1
-            },
-
-            // Naruto
-            {
-                anime: "Naruto",
-                frage: "Was ist Narutos Lieblingsessen?",
-                antworten: ["Sushi", "Onigiri", "Ramen", "Tempura"],
-                richtig: 2
-            },
-            {
-                anime: "Naruto",
-                frage: "Wie heißt Sasukes älterer Bruder?",
-                antworten: ["Madara", "Obito", "Itachi", "Shisui"],
-                richtig: 2
-            },
-            {
-                anime: "Naruto",
-                frage: "Welche besondere Augentechnik hat der Uchiha-Clan?",
-                antworten: ["Byakugan", "Rinnegan", "Tenseigan", "Sharingan"],
-                richtig: 3
-            },
-
-            // Spy × Family
-            {
-                anime: "Spy × Family",
-                frage: "Wie heißt die Eliteschule, in die Anya soll?",
-                antworten: ["Star Academy", "Eden Academy", "Royal School", "Crown Academy"],
-                richtig: 1
-            },
-            {
-                anime: "Spy × Family",
-                frage: "Wie heißt Anyas Lieblingssendung im Fernsehen?",
-                antworten: ["Ninja Wars", "Spy Wars", "Hero Force", "Galaxy Quest"],
-                richtig: 1
-            },
-
-            // Jujutsu Kaisen
-            {
-                anime: "Jujutsu Kaisen",
-                frage: "Wie heißt die Schule, die Yuji besucht?",
-                antworten: ["Osaka Jujutsu High", "Kyoto Jujutsu High", "Tokyo Jujutsu High", "Nagoya Jujutsu High"],
-                richtig: 2
-            },
-            {
-                anime: "Jujutsu Kaisen",
-                frage: "Wie nennt man die übernatürlichen Wesen in Jujutsu Kaisen?",
-                antworten: ["Dämonen", "Flüche", "Geister", "Schatten"],
-                richtig: 1
-            },
+            { anime: "Kamikaze Kaito Jeanne", frage: "Wessen Reinkarnation ist die Heldin Jeanne?", antworten: ["Kleopatra", "Marie Curie", "Jeanne d'Arc", "Königin Elisabeth"], richtig: 2 },
+            { anime: "Kamikaze Kaito Jeanne", frage: "Wie heißt Jeannes Gegenspielerin / ihr Rivale als Phantom-Dieb?", antworten: ["Dark", "Phantom", "Sinbad", "Shadow"], richtig: 2 },
 
             // Dragon Ball
-            {
-                anime: "Dragon Ball",
-                frage: "Wie heißt Gokus stärkste Attacke?",
-                antworten: ["Galick Gun", "Final Flash", "Kamehameha", "Spirit Bomb"],
-                richtig: 2
-            },
-            {
-                anime: "Dragon Ball",
-                frage: "Wie viele Dragonballs muss man sammeln um einen Wunsch zu erfüllen?",
-                antworten: ["5", "6", "7", "8"],
-                richtig: 2
-            },
-            {
-                anime: "Dragon Ball",
-                frage: "Wie heißt Gokus Rivale und späterer Freund?",
-                antworten: ["Freezer", "Cell", "Vegeta", "Piccolo"],
-                richtig: 2
-            },
-            {
-                anime: "Dragon Ball",
-                frage: "Wie heißt Gokus Sohn?",
-                antworten: ["Goten", "Gohan", "Trunks", "Pan"],
-                richtig: 1
-            },
+            { anime: "Dragon Ball", frage: "Wie heißt Gokus berühmteste Verwandlung?", antworten: ["Ultra Warrior", "Super Saiyajin", "Mega Kämpfer", "Hyper Ninja"], richtig: 1 },
+            { anime: "Dragon Ball", frage: "Wie heißt Gokus stärkste Attacke?", antworten: ["Galick Gun", "Final Flash", "Kamehameha", "Spirit Bomb"], richtig: 2 },
+            { anime: "Dragon Ball", frage: "Wie viele Dragonballs muss man sammeln um einen Wunsch zu erfüllen?", antworten: ["5", "6", "7", "8"], richtig: 2 },
+            { anime: "Dragon Ball", frage: "Wie heißt Gokus Rivale und späterer Freund?", antworten: ["Freezer", "Cell", "Vegeta", "Piccolo"], richtig: 2 },
+            { anime: "Dragon Ball", frage: "Wie heißt Gokus Sohn?", antworten: ["Goten", "Gohan", "Trunks", "Pan"], richtig: 1 },
 
             // Attack on Titan
-            {
-                anime: "Attack on Titan",
-                frage: "Welche besondere Fähigkeit hat Eren Jäger?",
-                antworten: ["Er kann fliegen", "Er ist unsterblich", "Er kann sich in einen Titan verwandeln", "Er kann Gedanken lesen"],
-                richtig: 2
-            },
-            {
-                anime: "Attack on Titan",
-                frage: "Wie heißt die Elite-Einheit die Titanen bekämpft?",
-                antworten: ["Militärpolizei", "Garnisonstruppe", "Aufklärungstrupp", "Titanenjäger"],
-                richtig: 2
-            },
+            { anime: "Attack on Titan", frage: "Wie heißt der Hauptcharakter in Attack on Titan?", antworten: ["Levi Ackermann", "Armin Arlert", "Eren Jäger", "Mikasa Ackermann"], richtig: 2 },
+            { anime: "Attack on Titan", frage: "Welche besondere Fähigkeit hat Eren Jäger?", antworten: ["Er kann fliegen", "Er ist unsterblich", "Er kann sich in einen Titan verwandeln", "Er kann Gedanken lesen"], richtig: 2 },
+            { anime: "Attack on Titan", frage: "Wie heißt die Elite-Einheit die Titanen bekämpft?", antworten: ["Militärpolizei", "Garnisonstruppe", "Aufklärungstrupp", "Titanenjäger"], richtig: 2 },
 
             // My Hero Academia
-            {
-                anime: "My Hero Academia",
-                frage: "Wie heißt der stärkste Held in My Hero Academia?",
-                antworten: ["Endeavor", "Hawks", "All Might", "Eraser Head"],
-                richtig: 2
-            },
-            {
-                anime: "My Hero Academia",
-                frage: "Was ist Bakugos Quirk?",
-                antworten: ["Feuer", "Explosion", "Kraft", "Geschwindigkeit"],
-                richtig: 1
-            },
-            {
-                anime: "My Hero Academia",
-                frage: "Wie heißt die Heldenakademie die Deku besucht?",
-                antworten: ["S.A. High School", "U.A. High School", "H.E. High School", "P.R. High School"],
-                richtig: 1
-            },
+            { anime: "My Hero Academia", frage: "Wie lautet Dekus richtiger Nachname in My Hero Academia?", antworten: ["Bakugo", "Todoroki", "Midoriya", "Kirishima"], richtig: 2 },
+            { anime: "My Hero Academia", frage: "Wie heißt der stärkste Held in My Hero Academia?", antworten: ["Endeavor", "Hawks", "All Might", "Eraser Head"], richtig: 2 },
+            { anime: "My Hero Academia", frage: "Was ist Bakugos Quirk?", antworten: ["Feuer", "Explosion", "Kraft", "Geschwindigkeit"], richtig: 1 },
+            { anime: "My Hero Academia", frage: "Wie heißt die Heldenakademie die Deku besucht?", antworten: ["S.A. High School", "U.A. High School", "H.E. High School", "P.R. High School"], richtig: 1 },
+
+            // Death Note
+            { anime: "Death Note", frage: "Wie heißt das magische Notizbuch in Death Note?", antworten: ["Shadow Book", "Soul Note", "Dark Page", "Death Note"], richtig: 3 },
+            { anime: "Death Note", frage: "Wie heißt der Hauptcharakter in Death Note?", antworten: ["L", "Near", "Light Yagami", "Mello"], richtig: 2 },
+            { anime: "Death Note", frage: "Was passiert, wenn man einen Namen in das Death Note schreibt?", antworten: ["Die Person schläft ein", "Die Person verliert die Erinnerung", "Die Person stirbt", "Die Person wird krank"], richtig: 2 },
 
             // Sailor Moon
-            {
-                anime: "Sailor Moon",
-                frage: "Wie heißt die Hauptfigur in Sailor Moon mit richtigem Namen?",
-                antworten: ["Rei Hino", "Makoto Kino", "Ami Mizuno", "Usagi Tsukino"],
-                richtig: 3
-            },
-            {
-                anime: "Sailor Moon",
-                frage: "In wen verwandelt sich Usagi?",
-                antworten: ["Sailor Mars", "Sailor Moon", "Sailor Venus", "Sailor Jupiter"],
-                richtig: 1
-            },
+            { anime: "Sailor Moon", frage: "Wie heißt die Hauptfigur in Sailor Moon mit richtigem Namen?", antworten: ["Rei Hino", "Makoto Kino", "Ami Mizuno", "Usagi Tsukino"], richtig: 3 },
+            { anime: "Sailor Moon", frage: "In wen verwandelt sich Usagi?", antworten: ["Sailor Mars", "Sailor Moon", "Sailor Venus", "Sailor Jupiter"], richtig: 1 },
+            { anime: "Sailor Moon", frage: "Wie heißt Sailor Moons Kater?", antworten: ["Artemis", "Luna", "Cait Sith", "Pyro"], richtig: 0 },
 
             // Pokémon
-            {
-                anime: "Pokémon",
-                frage: "Wie heißt Ashs allerertes Pokémon?",
-                antworten: ["Glumanda", "Schiggy", "Pikachu", "Bisasam"],
-                richtig: 2
-            },
-            {
-                anime: "Pokémon",
-                frage: "Wie heißt die böse Organisation in der Original-Pokémon-Serie?",
-                antworten: ["Team Aqua", "Team Magma", "Team Rocket", "Team Plasma"],
-                richtig: 2
-            },
+            { anime: "Pokémon", frage: "Wie heißt Ashs allerertes Pokémon?", antworten: ["Glumanda", "Schiggy", "Pikachu", "Bisasam"], richtig: 2 },
+            { anime: "Pokémon", frage: "Wie heißt die böse Organisation in der Original-Pokémon-Serie?", antworten: ["Team Aqua", "Team Magma", "Team Rocket", "Team Plasma"], richtig: 2 },
+            { anime: "Pokémon", frage: "Welches Pokémon gilt als das stärkste?", antworten: ["Mewtu", "Mew", "Arceus", "Dialga"], richtig: 2 },
 
             // Bleach
-            {
-                anime: "Bleach",
-                frage: "Wie heißt der Hauptcharakter in Bleach?",
-                antworten: ["Rukia Kuchiki", "Ichigo Kurosaki", "Renji Abarai", "Orihime Inoue"],
-                richtig: 1
-            },
-            {
-                anime: "Bleach",
-                frage: "Was ist Ichigo in Bleach?",
-                antworten: ["Ein Ninja", "Ein Zauberer", "Ein Ersatz-Shinigami", "Ein Dämonenjäger"],
-                richtig: 2
-            },
+            { anime: "Bleach", frage: "Wie heißt der Hauptcharakter in Bleach?", antworten: ["Rukia Kuchiki", "Ichigo Kurosaki", "Renji Abarai", "Orihime Inoue"], richtig: 1 },
+            { anime: "Bleach", frage: "Was ist Ichigo in Bleach?", antworten: ["Ein Ninja", "Ein Zauberer", "Ein Ersatz-Shinigami", "Ein Dämonenjäger"], richtig: 2 },
+            { anime: "Bleach", frage: "Wie heißt Ichigos Schwert?", antworten: ["Zangetsu", "Senbonzakura", "Ryujin Jakka", "Zabimaru"], richtig: 0 },
 
             // Fairy Tail
-            {
-                anime: "Fairy Tail",
-                frage: "Wie heißt die Hauptgilde in Fairy Tail?",
-                antworten: ["Blue Pegasus", "Lamia Scale", "Fairy Tail", "Sabertooth"],
-                richtig: 2
-            },
-            {
-                anime: "Fairy Tail",
-                frage: "Was ist Natsus Magie in Fairy Tail?",
-                antworten: ["Eis-Magie", "Feuer-Drachentöter-Magie", "Schwert-Magie", "Himmels-Magie"],
-                richtig: 1
-            },
+            { anime: "Fairy Tail", frage: "Wie heißt die Hauptgilde in Fairy Tail?", antworten: ["Blue Pegasus", "Lamia Scale", "Fairy Tail", "Sabertooth"], richtig: 2 },
+            { anime: "Fairy Tail", frage: "Was ist Natsus Magie in Fairy Tail?", antworten: ["Eis-Magie", "Feuer-Drachentöter-Magie", "Schwert-Magie", "Himmels-Magie"], richtig: 1 },
+            { anime: "Fairy Tail", frage: "Wie heißt Lucys Hauptwaffe?", antworten: ["Schwert", "Bogen", "Schlüssel der Sternentore", "Magiestab"], richtig: 2 },
 
             // Fullmetal Alchemist
-            {
-                anime: "Fullmetal Alchemist",
-                frage: "Was ist das Grundgesetz der Alchemie in Fullmetal Alchemist?",
-                antworten: ["Gleichgewicht der Natur", "Äquivalenter Tausch", "Kraft der Elemente", "Kreislauf des Lebens"],
-                richtig: 1
-            },
-            {
-                anime: "Fullmetal Alchemist",
-                frage: "Was verliert Edward Elric bei der verbotenen Transmutation?",
-                antworten: ["Sein Gedächtnis", "Seinen rechten Arm und linken Fuß", "Seine Alchemie", "Sein Augenlicht"],
-                richtig: 1
-            },
+            { anime: "Fullmetal Alchemist", frage: "Was ist das Grundgesetz der Alchemie in Fullmetal Alchemist?", antworten: ["Gleichgewicht der Natur", "Äquivalenter Tausch", "Kraft der Elemente", "Kreislauf des Lebens"], richtig: 1 },
+            { anime: "Fullmetal Alchemist", frage: "Was verliert Edward Elric bei der verbotenen Transmutation?", antworten: ["Sein Gedächtnis", "Seinen rechten Arm und linken Fuß", "Seine Alchemie", "Sein Augenlicht"], richtig: 1 },
+            { anime: "Fullmetal Alchemist", frage: "Was suchen die Elric-Brüder, um ihre Körper zurückzubekommen?", antworten: ["Den Heiligen Gral", "Den Stein der Weisen", "Das Elixier des Lebens", "Die fünf Alchemie-Siegel"], richtig: 1 },
         ];
 
         // ── Quiz-Logik ─────────────────────────────────────────────
-        const BUCHSTABEN = ['A', 'B', 'C', 'D'];
+        const BUCHSTABEN       = ['A', 'B', 'C', 'D'];
+        const FRAGEN_PRO_RUNDE = 10;
         let fragen       = [];
         let aktuelleIdx  = 0;
         let punkte       = 0;
@@ -790,15 +660,111 @@
             return a;
         }
 
-        const FRAGEN_PRO_RUNDE = 10;
+        // ── Themen-Auswahl ─────────────────────────────────────────
 
-        function starten() {
-            fragen      = mischen(alleFragen).slice(0, FRAGEN_PRO_RUNDE);
+        function getGespeicherteThemen() {
+            try {
+                const t = JSON.parse(localStorage.getItem('quizThemen') || '[]');
+                return Array.isArray(t) ? t : [];
+            } catch(e) { return []; }
+        }
+
+        function getAlleThemen() {
+            const map = {};
+            alleFragen.forEach(f => { map[f.anime] = (map[f.anime] || 0) + 1; });
+            return Object.entries(map).sort((a, b) => b[1] - a[1]);
+        }
+
+        function ladeThemenAuswahl() {
+            const gespeichert = getGespeicherteThemen();
+            const alleThemen  = getAlleThemen();
+            const vorauswahl  = gespeichert.length > 0
+                ? gespeichert
+                : alleThemen.map(([name]) => name);
+
+            const grid = document.getElementById('themenGrid');
+            grid.innerHTML = '';
+            alleThemen.forEach(([thema, anzahl]) => {
+                const aktiv = vorauswahl.includes(thema);
+                const label = document.createElement('label');
+                label.className = 'themen-check' + (aktiv ? ' aktiv' : '');
+                label.innerHTML =
+                    `<input type="checkbox" value="${thema}" ${aktiv ? 'checked' : ''}>` +
+                    `<span class="themen-name">${thema}</span>` +
+                    `<span class="themen-anzahl">${anzahl}×</span>`;
+                label.querySelector('input').addEventListener('change', function() {
+                    label.classList.toggle('aktiv', this.checked);
+                    aktualisiereZaehler();
+                });
+                grid.appendChild(label);
+            });
+            aktualisiereZaehler();
+        }
+
+        function aktualisiereZaehler() {
+            const themen    = getGewaehlteThemen();
+            const verfuegbar = alleFragen.filter(f => themen.includes(f.anime)).length;
+            const zaehler   = document.getElementById('themenZaehler');
+            const btn       = document.getElementById('btnQuizStart');
+
+            if (verfuegbar >= FRAGEN_PRO_RUNDE) {
+                zaehler.textContent = verfuegbar + ' Fragen verfügbar ✔';
+                zaehler.className   = 'themen-zaehler genug';
+                btn.disabled        = false;
+            } else {
+                zaehler.textContent = verfuegbar + ' von mindestens ' + FRAGEN_PRO_RUNDE + ' – wähle mehr Themen!';
+                zaehler.className   = 'themen-zaehler zuwenig';
+                btn.disabled        = true;
+            }
+        }
+
+        function getGewaehlteThemen() {
+            return [...document.querySelectorAll('#themenGrid input:checked')].map(cb => cb.value);
+        }
+
+        function allesAuswaehlen() {
+            document.querySelectorAll('#themenGrid input').forEach(cb => {
+                cb.checked = true;
+                cb.closest('label').classList.add('aktiv');
+            });
+            aktualisiereZaehler();
+        }
+
+        function keinesAuswaehlen() {
+            document.querySelectorAll('#themenGrid input').forEach(cb => {
+                cb.checked = false;
+                cb.closest('label').classList.remove('aktiv');
+            });
+            aktualisiereZaehler();
+        }
+
+        function themenBestaetigen() {
+            const themen = getGewaehlteThemen();
+            localStorage.setItem('quizThemen', JSON.stringify(themen));
+            document.getElementById('themenScreen').style.display = 'none';
+            starten(themen);
+        }
+
+        function zeigeThemenAuswahl() {
+            document.getElementById('ergebnis').style.display      = 'none';
+            document.getElementById('quizInterface').style.display = 'none';
+            document.getElementById('themenScreen').style.display  = 'block';
+            ladeThemenAuswahl();
+        }
+
+        // ── Quiz starten / spielen ─────────────────────────────────
+
+        function starten(themen) {
+            const basis = themen
+                ? alleFragen.filter(f => themen.includes(f.anime))
+                : alleFragen;
+            fragen      = mischen(basis).slice(0, FRAGEN_PRO_RUNDE);
             aktuelleIdx = 0;
             punkte      = 0;
             beantwortet = false;
-            document.getElementById('ergebnis').style.display       = 'none';
-            document.getElementById('quizInterface').style.display  = 'block';
+            document.getElementById('ergebnis').style.display      = 'none';
+            document.getElementById('themenScreen').style.display  = 'none';
+            document.getElementById('quizInterface').style.display = 'block';
             zeigeFrage();
         }
 
@@ -807,20 +773,17 @@
             const f     = fragen[aktuelleIdx];
             const total = fragen.length;
 
-            // Fortschritt
             document.getElementById('progressBar').style.width =
                 ((aktuelleIdx / total) * 100) + '%';
             document.getElementById('progressLabel').textContent =
                 'Frage ' + (aktuelleIdx + 1) + ' von ' + total;
 
-            // Frage
             document.getElementById('animeLabel').textContent   = f.anime;
             document.getElementById('questionText').textContent = f.frage;
             document.getElementById('feedback').textContent     = '';
             document.getElementById('feedback').className       = 'feedback';
             document.getElementById('btnWeiter').style.display  = 'none';
 
-            // Antworten
             const grid = document.getElementById('answersGrid');
             grid.innerHTML = '';
             f.antworten.forEach((text, i) => {
@@ -850,8 +813,7 @@
                 feedback.textContent = '✔ Richtig!';
                 feedback.className   = 'feedback richtig';
             } else {
-                feedback.textContent = '✘ Leider falsch! Die richtige Antwort war: ' +
-                    BUCHSTABEN[richtig];
+                feedback.textContent = '✘ Leider falsch! Die richtige Antwort war: ' + BUCHSTABEN[richtig];
                 feedback.className   = 'feedback falsch';
             }
 
@@ -874,7 +836,6 @@
             document.getElementById('progressBar').style.width = '100%';
             document.getElementById('quizInterface').style.display = 'none';
 
-            // Scores speichern
             localStorage.setItem('lastScore', punkte);
             const prev = parseInt(localStorage.getItem('bestScore') || '0');
             if (punkte > prev) localStorage.setItem('bestScore', punkte);
@@ -907,11 +868,30 @@
         }
 
         function neustarten() {
-            starten();
+            const themen = getGespeicherteThemen();
+            const basis  = themen.length > 0
+                ? alleFragen.filter(f => themen.includes(f.anime))
+                : alleFragen;
+            if (basis.length >= FRAGEN_PRO_RUNDE) {
+                starten(themen.length > 0 ? themen : null);
+            } else {
+                zeigeThemenAuswahl();
+            }
         }
 
-        // Quiz starten
-        starten();
+        // ── Initialisierung ────────────────────────────────────────
+        (function init() {
+            const themen     = getGespeicherteThemen();
+            const verfuegbar = themen.length > 0
+                ? alleFragen.filter(f => themen.includes(f.anime)).length
+                : 0;
+
+            if (themen.length > 0 && verfuegbar >= FRAGEN_PRO_RUNDE) {
+                starten(themen);
+            } else {
+                zeigeThemenAuswahl();
+            }
+        })();
     </script>
 </body>
 </html>
