@@ -490,6 +490,14 @@
             letter-spacing: 1px;
         }
         .schwierig-check.aktiv .schwierig-sub { color: rgba(255,215,0,0.55); }
+        .schwierig-check.extrem-option { border-color: rgba(204,34,34,0.25); }
+        .schwierig-check.extrem-option:hover { border-color: rgba(204,34,34,0.6); }
+        .schwierig-check.extrem-option.aktiv {
+            background: rgba(204,34,34,0.12);
+            border-color: var(--wrong);
+            color: var(--wrong);
+        }
+        .schwierig-check.extrem-option.aktiv .schwierig-sub { color: rgba(204,34,34,0.6); }
 
         /* ── Timer ──────────────────────────────────── */
         .timer-wrap {
@@ -602,6 +610,11 @@
                                 <span>⏱ Zeitdruck</span>
                                 <span class="schwierig-sub">20 Sek. pro Frage</span>
                             </label>
+                            <label class="schwierig-check extrem-option" id="lblExtrem">
+                                <input type="radio" name="schwierigkeit" value="extrem">
+                                <span>⚡ Extremer Zeitdruck</span>
+                                <span class="schwierig-sub">10 Sek. pro Frage</span>
+                            </label>
                         </div>
 
                         <div class="text-center">
@@ -660,6 +673,11 @@
                                     <input type="radio" name="schwierigkeitErgebnis" value="zeitdruck">
                                     <span>⏱ Zeitdruck</span>
                                     <span class="schwierig-sub">20 Sek. pro Frage</span>
+                                </label>
+                                <label class="schwierig-check extrem-option" id="ergebnisLblExtrem">
+                                    <input type="radio" name="schwierigkeitErgebnis" value="extrem">
+                                    <span>⚡ Extremer Zeitdruck</span>
+                                    <span class="schwierig-sub">10 Sek. pro Frage</span>
                                 </label>
                             </div>
                         </div>
@@ -891,7 +909,7 @@
         // ── Quiz-Logik ─────────────────────────────────────────────
         const BUCHSTABEN       = ['A', 'B', 'C', 'D'];
         const FRAGEN_PRO_RUNDE = 10;
-        const TIMER_SEKUNDEN   = 20;
+        function getTimerSekunden() { return schwierigkeit === 'extrem' ? 10 : 20; }
         let fragen       = [];
         let aktuelleIdx  = 0;
         let punkte       = 0;
@@ -959,7 +977,8 @@
 
         function starteTimer() {
             stoppeTimer();
-            timerRest = TIMER_SEKUNDEN;
+            const sekunden = getTimerSekunden();
+            timerRest = sekunden;
             const zahl = document.getElementById('timerZahl');
             const bar  = document.getElementById('timerBar');
             zahl.textContent = timerRest;
@@ -970,10 +989,10 @@
 
             timerInterval = setInterval(() => {
                 timerRest--;
-                const pct = (timerRest / TIMER_SEKUNDEN) * 100;
+                const pct = (timerRest / sekunden) * 100;
                 zahl.textContent = timerRest;
                 bar.style.width = pct + '%';
-                if (timerRest <= 5) zahl.classList.add('dringend');
+                if (timerRest <= 3) zahl.classList.add('dringend');
                 if (timerRest <= 0) { stoppeTimer(); zeitAbgelaufen(); }
             }, 1000);
         }
@@ -1137,7 +1156,7 @@
                 grid.appendChild(btn);
             });
 
-            if (schwierigkeit === 'zeitdruck') {
+            if (schwierigkeit === 'zeitdruck' || schwierigkeit === 'extrem') {
                 starteTimer();
             } else {
                 stoppeTimer();
