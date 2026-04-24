@@ -1207,8 +1207,12 @@
             document.getElementById('quizInterface').style.display = 'none';
 
             localStorage.setItem('lastScore', punkte);
+            localStorage.setItem('lastScoreSchwierigkeit', schwierigkeit);
             const prev = parseInt(localStorage.getItem('bestScore') || '0');
-            if (punkte > prev) localStorage.setItem('bestScore', punkte);
+            if (punkte > prev) {
+                localStorage.setItem('bestScore', punkte);
+                localStorage.setItem('bestScoreSchwierigkeit', schwierigkeit);
+            }
 
             const total = fragen.length;
             let titel, text;

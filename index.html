@@ -435,8 +435,8 @@
                     </div>
                     <p class="tagline mt-2">Dein Anime &mdash; Immer Aktuell</p>
                     <div class="score-mini" id="scoreMini">
-                        <div class="score-badge">🏆 Bester Score: <span id="bestScore">—</span>/10</div>
-                        <div class="score-badge">🕐 Letzter Score: <span id="lastScore">—</span>/10</div>
+                        <div class="score-badge">🏆 Bester Score: <span id="bestScore">—</span>/10 <span id="bestSchwierigkeit" style="opacity:0.7;"></span></div>
+                        <div class="score-badge">🕐 Letzter Score: <span id="lastScore">—</span>/10 <span id="lastSchwierigkeit" style="opacity:0.7;"></span></div>
                     </div>
                     <div class="danke-papa">
                         Danke, dass du mir alles gezeigt hast, Papa! ❤️
@@ -660,10 +660,25 @@
         // ── Quiz-Score anzeigen ────────────────────────
         const best = localStorage.getItem('bestScore');
         const last = localStorage.getItem('lastScore');
+        const bestS = localStorage.getItem('bestScoreSchwierigkeit');
+        const lastS = localStorage.getItem('lastScoreSchwierigkeit');
+
+        function schwierigkeitSymbol(s) {
+            if (s === 'extrem')    return '⚡';
+            if (s === 'zeitdruck') return '⏱';
+            return '⏸';
+        }
+
         if (best !== null || last !== null) {
             document.getElementById('scoreMini').style.display = 'flex';
-            if (best !== null) document.getElementById('bestScore').textContent = best;
-            if (last !== null) document.getElementById('lastScore').textContent = last;
+            if (best !== null) {
+                document.getElementById('bestScore').textContent = best;
+                if (bestS) document.getElementById('bestSchwierigkeit').textContent = schwierigkeitSymbol(bestS);
+            }
+            if (last !== null) {
+                document.getElementById('lastScore').textContent = last;
+                if (lastS) document.getElementById('lastSchwierigkeit').textContent = schwierigkeitSymbol(lastS);
+            }
         }
 
     </script>
