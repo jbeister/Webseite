@@ -415,6 +415,80 @@
             border-color: var(--gold);
         }
 
+        /* ── Schwierigkeitsstufe ────────────────────── */
+        .schwierigkeit-titel {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 1rem;
+            letter-spacing: 4px;
+            color: rgba(192,192,192,0.55);
+            margin: 1.2rem 0 0.6rem;
+        }
+        .schwierigkeit-grid {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .schwierig-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.04);
+            border: 1.5px solid rgba(255,215,0,0.2);
+            border-radius: 40px;
+            padding: 0.55rem 1.1rem;
+            cursor: pointer;
+            transition: background 0.18s, border-color 0.18s;
+            user-select: none;
+            font-family: 'Oswald', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--silver);
+        }
+        .schwierig-check input[type="radio"] { display: none; }
+        .schwierig-check.aktiv {
+            background: rgba(255,215,0,0.12);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+        .schwierig-check:hover { border-color: rgba(255,215,0,0.55); }
+        .schwierig-check .schwierig-sub {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.78rem;
+            color: rgba(192,192,192,0.45);
+            letter-spacing: 1px;
+        }
+        .schwierig-check.aktiv .schwierig-sub { color: rgba(255,215,0,0.55); }
+
+        /* ── Timer ──────────────────────────────────── */
+        .timer-wrap {
+            display: none;
+            margin-bottom: 0.8rem;
+        }
+        .timer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        .timer-label {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+            color: rgba(192,192,192,0.5);
+        }
+        #timerZahl {
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            color: var(--gold);
+            transition: color 0.3s;
+            letter-spacing: 1px;
+        }
+        #timerZahl.dringend { color: var(--wrong); }
+        #timerBar {
+            transition: width 1s linear, background-color 0.5s;
+        }
+
         /* ── Footer ─────────────────────────────────── */
         footer {
             background: #050508;
@@ -485,6 +559,20 @@
 
                         <div class="themen-zaehler" id="themenZaehler">0 Fragen verfügbar</div>
 
+                        <div class="schwierigkeit-titel">Schwierigkeitsstufe</div>
+                        <div class="schwierigkeit-grid" id="schwierigkeitGrid">
+                            <label class="schwierig-check aktiv" id="lblNormal">
+                                <input type="radio" name="schwierigkeit" value="normal" checked>
+                                <span>⏸ Normal</span>
+                                <span class="schwierig-sub">Kein Timer</span>
+                            </label>
+                            <label class="schwierig-check" id="lblZeitdruck">
+                                <input type="radio" name="schwierigkeit" value="zeitdruck">
+                                <span>⏱ Zeitdruck</span>
+                                <span class="schwierig-sub">20 Sek. pro Frage</span>
+                            </label>
+                        </div>
+
                         <div class="text-center">
                             <button class="btn-quiz-start" id="btnQuizStart" disabled onclick="themenBestaetigen()">
                                 Quiz starten ▶
@@ -494,6 +582,16 @@
 
                     <!-- Quiz-Interface -->
                     <div id="quizInterface" style="display:none;">
+                        <div class="timer-wrap" id="timerWrap">
+                            <div class="timer-header">
+                                <span class="timer-label">⏱ Verbleibende Zeit</span>
+                                <span id="timerZahl">20</span>
+                            </div>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar-fill" id="timerBar" style="width:100%;"></div>
+                            </div>
+                        </div>
+
                         <div class="progress-bar-wrap">
                             <div class="progress-bar-fill" id="progressBar" style="width:0%"></div>
                         </div>
@@ -691,10 +789,14 @@
         // ── Quiz-Logik ─────────────────────────────────────────────
         const BUCHSTABEN       = ['A', 'B', 'C', 'D'];
         const FRAGEN_PRO_RUNDE = 10;
+        const TIMER_SEKUNDEN   = 20;
         let fragen       = [];
         let aktuelleIdx  = 0;
         let punkte       = 0;
         let beantwortet  = false;
+        let schwierigkeit = 'normal';
+        let timerInterval = null;
+        let timerRest     = TIMER_SEKUNDEN;
 
         function mischen(arr) {
             const a = [...arr];
@@ -718,6 +820,71 @@
             const map = {};
             alleFragen.forEach(f => { map[f.anime] = (map[f.anime] || 0) + 1; });
             return Object.entries(map).sort((a, b) => b[1] - a[1]);
+        }
+
+        // ── Schwierigkeit ──────────────────────────────────────────
+
+        function getSchwierigkeit() {
+            return localStorage.getItem('quizSchwierigkeit') || 'normal';
+        }
+
+        function ladeSchwierigkeit() {
+            const s = getSchwierigkeit();
+            schwierigkeit = s;
+            document.querySelectorAll('input[name="schwierigkeit"]').forEach(rb => {
+                rb.checked = rb.value === s;
+                rb.closest('label').classList.toggle('aktiv', rb.value === s);
+            });
+        }
+
+        document.querySelectorAll('input[name="schwierigkeit"]').forEach(rb => {
+            rb.addEventListener('change', function() {
+                document.querySelectorAll('.schwierig-check').forEach(l => l.classList.remove('aktiv'));
+                this.closest('label').classList.add('aktiv');
+            });
+        });
+
+        // ── Timer ──────────────────────────────────────────────────
+
+        function starteTimer() {
+            stoppeTimer();
+            timerRest = TIMER_SEKUNDEN;
+            const zahl = document.getElementById('timerZahl');
+            const bar  = document.getElementById('timerBar');
+            zahl.textContent = timerRest;
+            zahl.classList.remove('dringend');
+            bar.style.width = '100%';
+            bar.style.backgroundColor = '';
+            document.getElementById('timerWrap').style.display = 'block';
+
+            timerInterval = setInterval(() => {
+                timerRest--;
+                const pct = (timerRest / TIMER_SEKUNDEN) * 100;
+                zahl.textContent = timerRest;
+                bar.style.width = pct + '%';
+                if (timerRest <= 5) zahl.classList.add('dringend');
+                if (timerRest <= 0) { stoppeTimer(); zeitAbgelaufen(); }
+            }, 1000);
+        }
+
+        function stoppeTimer() {
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+        }
+
+        function zeitAbgelaufen() {
+            if (beantwortet) return;
+            beantwortet = true;
+            const f = fragen[aktuelleIdx];
+            document.querySelectorAll('.answer-btn').forEach((btn, i) => {
+                btn.disabled = true;
+                if (i === f.richtig) btn.classList.add('richtig');
+            });
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = '⏱ Zeit abgelaufen! Richtig wäre: ' + BUCHSTABEN[f.richtig];
+            feedback.className = 'feedback falsch';
+            const btnWeiter = document.getElementById('btnWeiter');
+            btnWeiter.style.display = 'block';
+            btnWeiter.textContent = aktuelleIdx < fragen.length - 1 ? 'Nächste Frage →' : 'Ergebnis ansehen 🏆';
         }
 
         function ladeThemenAuswahl() {
@@ -744,6 +911,7 @@
                 grid.appendChild(label);
             });
             aktualisiereZaehler();
+            ladeSchwierigkeit();
         }
 
         function aktualisiereZaehler() {
@@ -785,7 +953,9 @@
 
         function themenBestaetigen() {
             const themen = getGewaehlteThemen();
+            schwierigkeit = document.querySelector('input[name="schwierigkeit"]:checked').value;
             localStorage.setItem('quizThemen', JSON.stringify(themen));
+            localStorage.setItem('quizSchwierigkeit', schwierigkeit);
             document.getElementById('themenScreen').style.display = 'none';
             starten(themen);
         }
@@ -838,11 +1008,19 @@
                 btn.addEventListener('click', () => antworten(i, f.richtig));
                 grid.appendChild(btn);
             });
+
+            if (schwierigkeit === 'zeitdruck') {
+                starteTimer();
+            } else {
+                stoppeTimer();
+                document.getElementById('timerWrap').style.display = 'none';
+            }
         }
 
         function antworten(gewaehlt, richtig) {
             if (beantwortet) return;
             beantwortet = true;
+            stoppeTimer();
 
             const buttons  = document.querySelectorAll('.answer-btn');
             const feedback = document.getElementById('feedback');
@@ -926,6 +1104,7 @@
 
         // ── Initialisierung ────────────────────────────────────────
         (function init() {
+            schwierigkeit    = getSchwierigkeit();
             const themen     = getGespeicherteThemen();
             const verfuegbar = themen.length > 0
                 ? alleFragen.filter(f => themen.includes(f.anime)).length
