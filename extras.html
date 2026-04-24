@@ -415,6 +415,37 @@
             border-color: var(--gold);
         }
 
+        /* ── Kleine Anime Fans Bereich ─────────────── */
+        .themen-section-header {
+            width: 100%;
+            font-family: 'Bebas Neue', cursive;
+            font-size: 0.82rem;
+            letter-spacing: 4px;
+            color: rgba(100, 180, 255, 0.7);
+            padding: 0.7rem 0 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .themen-section-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(100, 180, 255, 0.2);
+        }
+        .themen-check.kleine-fans {
+            border-color: rgba(100, 180, 255, 0.25);
+        }
+        .themen-check.kleine-fans:hover { border-color: rgba(100, 180, 255, 0.6); }
+        .themen-check.kleine-fans.aktiv {
+            background: rgba(100, 180, 255, 0.1);
+            border-color: #64b4ff;
+        }
+        .themen-check.kleine-fans .themen-name { color: var(--silver); }
+        .themen-check.kleine-fans.aktiv .themen-name { color: #64b4ff; }
+        .themen-check.kleine-fans .themen-anzahl { color: rgba(100,180,255,0.4); }
+        .themen-check.kleine-fans.aktiv .themen-anzahl { color: rgba(100,180,255,0.6); }
+
         /* ── Schwierigkeitsstufe ────────────────────── */
         .schwierigkeit-titel {
             font-family: 'Bebas Neue', cursive;
@@ -801,6 +832,23 @@
             { anime: "Black Clover", frage: "Welchem magischen Ritter-Orden tritt Asta bei?", antworten: ["Goldene Morgenröte", "Schwarze Stiere", "Silberner Adler", "Blaue Rosen"], richtig: 1 },
             { anime: "Black Clover", frage: "Was ist Astas großes Ziel in Black Clover?", antworten: ["Der stärkste Teufel zu werden", "Yuno zu besiegen", "Der Magierkönig zu werden", "Das Königreich zu verlassen"], richtig: 2 },
             { anime: "Black Clover", frage: "Wie heißt Astas Rivale und Freund?", antworten: ["Luck Voltia", "Magna Swing", "Yuno", "Finral Roulacase"], richtig: 2 },
+
+            // Heidi
+            { anime: "Heidi", frage: "Wie heißt das Mädchen in Heidi?", antworten: ["Greta", "Heidi", "Lotte", "Clara"], richtig: 1 },
+            { anime: "Heidi", frage: "Bei wem wohnt Heidi auf der Alm?", antworten: ["Beim Onkel Peter", "Beim Alm-Öhi (Großvater)", "Beim Hirten Tobias", "Beim Bürgermeister"], richtig: 1 },
+            { anime: "Heidi", frage: "Wie heißt Heidis Freundin in Frankfurt, die nicht laufen kann?", antworten: ["Greta", "Anna", "Clara", "Lotte"], richtig: 2 },
+            { anime: "Heidi", frage: "Wie heißt der Ziegenhirt, der Heidis Freund auf der Alm ist?", antworten: ["Hans", "Karl", "Peter", "Franz"], richtig: 2 },
+            { anime: "Heidi", frage: "In welchem Land spielt Heidi hauptsächlich?", antworten: ["Österreich", "Deutschland", "Schweiz", "Frankreich"], richtig: 2 },
+            { anime: "Heidi", frage: "In welche Stadt wird Heidi gegen ihren Willen gebracht?", antworten: ["Wien", "Berlin", "Frankfurt", "München"], richtig: 2 },
+            { anime: "Heidi", frage: "Wie heißt die strenge Hausdame bei Familie Sesemann?", antworten: ["Fräulein Rottenmeier", "Frau Braun", "Fräulein Schmidt", "Frau Huber"], richtig: 0 },
+            { anime: "Heidi", frage: "Welche Tiere liebt Heidi auf der Alm am meisten?", antworten: ["Kühe", "Hunde", "Ziegen", "Schafe"], richtig: 2 },
+            { anime: "Heidi", frage: "Was kann Clara zu Beginn der Geschichte nicht?", antworten: ["Sehen", "Hören", "Laufen", "Sprechen"], richtig: 2 },
+            { anime: "Heidi", frage: "Wie nennt Heidi ihren Großvater?", antworten: ["Opa", "Alm-Öhi", "Opi", "Großvati"], richtig: 1 },
+            { anime: "Heidi", frage: "Wie heißt Claras Vater?", antworten: ["Herr Fischer", "Herr Sesemann", "Herr Müller", "Herr Braun"], richtig: 1 },
+            { anime: "Heidi", frage: "Was passiert mit Clara am Ende der Geschichte?", antworten: ["Sie bleibt für immer krank", "Sie kann wieder laufen", "Sie zieht in die Berge", "Sie fährt zurück nach Frankfurt"], richtig: 1 },
+            { anime: "Heidi", frage: "Aus welchem Dorf kommt Heidi ursprünglich?", antworten: ["Aus Frankfurt", "Aus Dörfli bei Maienfeld", "Aus Wien", "Aus München"], richtig: 1 },
+            { anime: "Heidi", frage: "Was bringt Heidi der alten Großmutter von Peter immer mit?", antworten: ["Blumen", "Weißes Brot", "Käse", "Milch"], richtig: 1 },
+            { anime: "Heidi", frage: "Wer bringt Heidi gegen ihren Willen nach Frankfurt?", antworten: ["Ihr Großvater", "Peter", "Tante Dete", "Fräulein Rottenmeier"], richtig: 2 },
         ];
 
         // ── Quiz-Logik ─────────────────────────────────────────────
@@ -913,6 +961,8 @@
             btnWeiter.textContent = aktuelleIdx < fragen.length - 1 ? 'Nächste Frage →' : 'Ergebnis ansehen 🏆';
         }
 
+        const KLEINE_FANS_THEMEN = new Set(['Heidi']);
+
         function ladeThemenAuswahl() {
             const gespeichert = getGespeicherteThemen();
             const alleThemen  = getAlleThemen();
@@ -922,10 +972,14 @@
 
             const grid = document.getElementById('themenGrid');
             grid.innerHTML = '';
-            alleThemen.forEach(([thema, anzahl]) => {
+
+            const normalThemen    = alleThemen.filter(([name]) => !KLEINE_FANS_THEMEN.has(name));
+            const kleineFansListe = alleThemen.filter(([name]) =>  KLEINE_FANS_THEMEN.has(name));
+
+            function erstelleChip(thema, anzahl, extraKlasse) {
                 const aktiv = vorauswahl.includes(thema);
                 const label = document.createElement('label');
-                label.className = 'themen-check' + (aktiv ? ' aktiv' : '');
+                label.className = 'themen-check' + (aktiv ? ' aktiv' : '') + (extraKlasse ? ' ' + extraKlasse : '');
                 label.innerHTML =
                     `<input type="checkbox" value="${thema}" ${aktiv ? 'checked' : ''}>` +
                     `<span class="themen-name">${thema}</span>` +
@@ -935,7 +989,18 @@
                     aktualisiereZaehler();
                 });
                 grid.appendChild(label);
-            });
+            }
+
+            normalThemen.forEach(([thema, anzahl]) => erstelleChip(thema, anzahl, ''));
+
+            if (kleineFansListe.length > 0) {
+                const header = document.createElement('div');
+                header.className = 'themen-section-header';
+                header.textContent = '⭐ Für kleine Anime Fans';
+                grid.appendChild(header);
+                kleineFansListe.forEach(([thema, anzahl]) => erstelleChip(thema, anzahl, 'kleine-fans'));
+            }
+
             aktualisiereZaehler();
             ladeSchwierigkeit();
         }
