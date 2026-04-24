@@ -29,8 +29,11 @@ Sprache mit dem Nutzer: **immer Deutsch**, einfach und verständlich erklären.
 - Kein separater Server nötig – einfache HTML-Dateien
 - Anfängerprojekt: Erklärungen zu allem auf einfachem Niveau
 - Responsiv: funktioniert auf Handy UND Computer (Bootstrap Responsive Design)
-- Scores gespeichert in `localStorage` (`bestScore`, `lastScore`)
-- Quiz-Themenauswahl gespeichert in `localStorage` (`quizThemen`)
+- localStorage-Keys:
+  - `bestScore`, `lastScore` – Quiz-Scores
+  - `bestScoreSchwierigkeit`, `lastScoreSchwierigkeit` – Schwierigkeit beim jeweiligen Score
+  - `quizThemen` – gespeicherte Themenauswahl (JSON-Array)
+  - `quizSchwierigkeit` – gespeicherte Schwierigkeit (`normal` / `zeitdruck` / `extrem`)
 
 ## Seitenstruktur (fertig)
 - `index.html` – Startseite mit Logo, Anime-Augen, Top-Listen, Quiz-Score, Danke-Nachricht
@@ -56,16 +59,24 @@ images/
 In der HTML-Datei das `<!-- <img ...> -->` Kommentar entfernen und den Platzhalter-Div löschen.
 
 ## Extras: Quiz
-- **64 Fragen** insgesamt (Stand April 2026)
-- Themen: One Piece (7), Naruto (6), Demon Slayer (5), Spy×Family (5), Jujutsu Kaisen (5),
-  Dragon Ball (5), My Hero Academia (4), Attack on Titan (3), Death Note (3),
-  Sailor Moon (3), Pokémon (3), Bleach (3), Fairy Tail (3), Fullmetal Alchemist (3),
-  Tagebücher der Apothekerin (2), Aggretsuko (2), Kamikaze Kaito Jeanne (2)
+- **101 Fragen** insgesamt (Stand April 2026)
+- **Normale Themen** (sortiert nach Fragenanzahl):
+  One Piece (7), Naruto (7), Demon Slayer (7), Spy×Family (7), Jujutsu Kaisen (7),
+  Dragon Ball (7), My Hero Academia (7), Attack on Titan (5), Death Note (5),
+  Sailor Moon (5), Pokémon (5), Bleach (5), Fairy Tail (5), Fullmetal Alchemist (5),
+  Black Clover (5), Tagebücher der Apothekerin (4), Aggretsuko (4), Kamikaze Kaito Jeanne (4)
+- **Für kleine Anime Fans** (eigener Abschnitt in der Themenauswahl, blau markiert):
+  Heidi (15), Biene Maja (6), Digimon (6), Wickie (5), Nils Holgersson (5), Pinocchio (5)
 - **Themenauswahl** vor dem Quiz – Benutzer wählt Themen, mindestens 10 Fragen nötig
 - Auswahl wird in `localStorage` gespeichert und ist jederzeit änderbar
 - Pro Runde: 10 zufällige Fragen aus den gewählten Themen (`FRAGEN_PRO_RUNDE = 10`)
-- Score wird in `localStorage` gespeichert und auf der Startseite angezeigt (`/10`)
-- "Themen ändern"-Button auf dem Ergebnis-Bildschirm
+- **Schwierigkeitsstufen** (wählbar vor dem Quiz UND auf dem Ergebnis-Bildschirm):
+  - ⏸ **Normal** – kein Timer
+  - ⏱ **Zeitdruck** – 20 Sekunden pro Frage
+  - ⚡ **Extremer Zeitdruck** – 10 Sekunden pro Frage (rot markiert)
+- Score + Schwierigkeit werden in `localStorage` gespeichert
+- Auf der Startseite: Score mit Schwierigkeit-Symbol (⏸/⏱/⚡) angezeigt
+- Buttons auf dem Ergebnis-Bildschirm: "Nochmal spielen", "Themen ändern ⚙"
 
 ## Empfehlungen
 Alle Empfehlungen sind ein- und ausklappbar (Bootstrap Collapse, Pfeil ▼/▲).
