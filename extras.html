@@ -616,6 +616,23 @@
                         </div>
                         <div class="ergebnis-titel" id="ergebnisTitel">Ergebnis</div>
                         <p class="ergebnis-text" id="ergebnisText"></p>
+
+                        <div style="margin: 0 auto 1.5rem; max-width: 380px;">
+                            <div class="schwierigkeit-titel">Schwierigkeitsstufe</div>
+                            <div class="schwierigkeit-grid" style="justify-content:center;" id="ergebnisDiffGrid">
+                                <label class="schwierig-check" id="ergebnisLblNormal">
+                                    <input type="radio" name="schwierigkeitErgebnis" value="normal">
+                                    <span>⏸ Normal</span>
+                                    <span class="schwierig-sub">Kein Timer</span>
+                                </label>
+                                <label class="schwierig-check" id="ergebnisLblZeitdruck">
+                                    <input type="radio" name="schwierigkeitErgebnis" value="zeitdruck">
+                                    <span>⏱ Zeitdruck</span>
+                                    <span class="schwierig-sub">20 Sek. pro Frage</span>
+                                </label>
+                            </div>
+                        </div>
+
                         <div class="ergebnis-buttons">
                             <button class="btn-neustart" onclick="neustarten()">Nochmal spielen 🔄</button>
                             <button class="btn-themen-aendern" onclick="zeigeThemenAuswahl()">Themen ändern ⚙</button>
@@ -839,8 +856,17 @@
 
         document.querySelectorAll('input[name="schwierigkeit"]').forEach(rb => {
             rb.addEventListener('change', function() {
-                document.querySelectorAll('.schwierig-check').forEach(l => l.classList.remove('aktiv'));
+                document.querySelectorAll('#schwierigkeitGrid .schwierig-check').forEach(l => l.classList.remove('aktiv'));
                 this.closest('label').classList.add('aktiv');
+            });
+        });
+
+        document.querySelectorAll('input[name="schwierigkeitErgebnis"]').forEach(rb => {
+            rb.addEventListener('change', function() {
+                document.querySelectorAll('#ergebnisDiffGrid .schwierig-check').forEach(l => l.classList.remove('aktiv'));
+                this.closest('label').classList.add('aktiv');
+                schwierigkeit = this.value;
+                localStorage.setItem('quizSchwierigkeit', schwierigkeit);
             });
         });
 
@@ -1088,6 +1114,11 @@
             document.getElementById('ergebnisTitel').textContent  = titel;
             document.getElementById('ergebnisText').textContent   = text;
             document.getElementById('ergebnis').style.display     = 'block';
+
+            document.querySelectorAll('input[name="schwierigkeitErgebnis"]').forEach(rb => {
+                rb.checked = rb.value === schwierigkeit;
+                rb.closest('label').classList.toggle('aktiv', rb.value === schwierigkeit);
+            });
         }
 
         function neustarten() {
