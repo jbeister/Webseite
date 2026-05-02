@@ -97,7 +97,7 @@
         /* Titelbild / Platzhalter */
         .cover-container {
             width: 100%;
-            aspect-ratio: 3 / 4;
+            aspect-ratio: 210 / 297;
             position: relative;
             overflow: hidden;
             background: linear-gradient(145deg, #1a1a30, #0d0d1e);
@@ -105,7 +105,7 @@
         .cover-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
             display: block;
         }
         /* Platzhalter — wird ausgeblendet sobald ein echtes Bild da ist */
@@ -231,45 +231,31 @@
             <div class="row g-4 justify-content-center">
 
                 <!-- Ausgabe 1 -->
-                <!-- Titelbild: images/ausgabe1/cover.jpg -->
                 <div class="col-12 col-sm-8 col-md-5 col-lg-4">
                     <div class="ausgabe-card">
-                        <div class="cover-container">
-                            <span class="ausgabe-badge">Ausgabe 1</span>
-                            <!-- Wenn du das Titelbild hast, ersetze den Platzhalter so:          -->
-                            <!-- <img src="images/ausgabe1/cover.jpg" alt="Ausgabe 1 Titelbild">  -->
-                            <div class="cover-placeholder">
-                                <div class="ph-icon">🖼️</div>
-                                <div class="ph-text">Titelbild kommt bald</div>
-                                <div class="ph-hint">images/ausgabe1/cover.jpg</div>
+                        <a href="media/ausgaben/01/ausgabe01.pdf" target="_blank">
+                            <div class="cover-container">
+                                <img src="media/ausgaben/01/titelseite01.png" alt="Ausgabe 1 Titelbild">
                             </div>
-                        </div>
+                        </a>
                         <div class="card-body-custom">
                             <div class="card-edition-title">Ausgabe 1</div>
                             <p class="card-desc">Die erste Ausgabe der Anime Aktuell – mit News, Empfehlungen und vielem mehr.</p>
-                            <a href="ausgabe1.html" class="btn-lesen stretched-link">Jetzt lesen →</a>
+                            <a href="media/ausgaben/01/ausgabe01.pdf" target="_blank" class="btn-lesen">Jetzt lesen →</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Ausgabe 2 -->
-                <!-- Titelbild: images/ausgabe2/cover.jpg -->
                 <div class="col-12 col-sm-8 col-md-5 col-lg-4">
                     <div class="ausgabe-card">
                         <div class="cover-container">
-                            <span class="ausgabe-badge">Ausgabe 2</span>
-                            <!-- Wenn du das Titelbild hast, ersetze den Platzhalter so:          -->
-                            <!-- <img src="images/ausgabe2/cover.jpg" alt="Ausgabe 2 Titelbild">  -->
-                            <div class="cover-placeholder">
-                                <div class="ph-icon">🖼️</div>
-                                <div class="ph-text">Titelbild kommt bald</div>
-                                <div class="ph-hint">images/ausgabe2/cover.jpg</div>
-                            </div>
+                            <img src="media/ausgaben/02/titelseite02.png" alt="Ausgabe 2 Titelbild">
                         </div>
                         <div class="card-body-custom">
                             <div class="card-edition-title">Ausgabe 2</div>
                             <p class="card-desc">Die zweite Ausgabe der Anime Aktuell – noch mehr Anime-Welt entdecken.</p>
-                            <a href="ausgabe2.html" class="btn-lesen stretched-link">Jetzt lesen →</a>
+                            <span class="btn-lesen" style="opacity:0.35;cursor:default;">Demnächst →</span>
                         </div>
                     </div>
                 </div>
